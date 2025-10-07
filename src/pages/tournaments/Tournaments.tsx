@@ -71,10 +71,10 @@ const CompetitionDetailPage: React.FC = () => {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-semibold text-gray-800">Competition Name</h1>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-pink-300 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+            {/* <div className="w-10 h-10 bg-pink-300 rounded-full flex items-center justify-center text-white font-semibold text-sm">
               IM
             </div>
-            <span className="text-gray-800 font-medium">Ibrahim Maina</span>
+            <span className="text-gray-800 font-medium">Ibrahim Maina</span> */}
           </div>
         </div>
 

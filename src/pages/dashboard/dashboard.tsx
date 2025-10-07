@@ -115,8 +115,8 @@ const BasketballDashboard: React.FC = () => {
               <h2 className="text-sm font-semibold text-gray-700 mb-4">Ongoing Game</h2>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-yellow-400 rounded-lg flex items-center justify-center">
-                    <BasketballIcon className="w-6 h-6 text-white" />
+                  <div className="flex items-center justify-center">
+                    <img src="/ball1.png" alt="Basketball" style={{ width: '35px', height: '35px' }} className="object-contain" />
                   </div>
                   <div>
                     <div className="text-xs text-gray-500 mb-1">TEAM A</div>
@@ -131,8 +131,8 @@ const BasketballDashboard: React.FC = () => {
                     <div className="text-xs text-gray-500 mb-1 text-right">TEAM B</div>
                     <div className="text-3xl font-bold text-gray-900">12</div>
                   </div>
-                  <div className="w-12 h-12 bg-blue-400 rounded-lg flex items-center justify-center">
-                    <BasketballIcon className="w-6 h-6 text-white" />
+                  <div className="flex items-center justify-center">
+                    <img src="/ball2.png" alt="Basketball" style={{ width: '35px', height: '35px' }} className="object-contain" />
                   </div>
                 </div>
               </div>
@@ -160,8 +160,8 @@ const BasketballDashboard: React.FC = () => {
                   <div className="flex-1 mx-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center">
-                          <BasketballIcon className="w-5 h-5 text-white" />
+                        <div className="flex items-center justify-center">
+                          <img src="/ball1.png" alt="Basketball" style={{ width: '35px', height: '35px' }} className="object-contain" />
                         </div>
                         <div className="text-sm text-gray-600">{upNextGames[currentSlide].teamA}</div>
                       </div>
@@ -170,8 +170,8 @@ const BasketballDashboard: React.FC = () => {
                       
                       <div className="flex items-center gap-3">
                         <div className="text-sm text-gray-600">{upNextGames[currentSlide].teamB}</div>
-                        <div className="w-10 h-10 bg-blue-400 rounded-lg flex items-center justify-center">
-                          <BasketballIcon className="w-5 h-5 text-white" />
+                        <div className="flex items-center justify-center">
+                          <img src="/ball2.png" alt="Basketball" style={{ width: '35px', height: '35px' }} className="object-contain" />
                         </div>
                       </div>
                     </div>
@@ -214,7 +214,7 @@ const BasketballDashboard: React.FC = () => {
                 {tournaments.map((tournament, idx) => (
                   <div key={idx} className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
                     <img 
-                      src="https://via.placeholder.com/48" 
+                      src="/club.png" 
                       alt="Tournament" 
                       className="w-12 h-12 rounded-lg object-cover"
                     />
@@ -240,26 +240,35 @@ const BasketballDashboard: React.FC = () => {
           {/* Right Column */}
           <div className="space-y-6">
             {/* New Game Setup Card */}
-            <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl p-6 shadow-lg relative overflow-hidden">
+            <div 
+              className="rounded-2xl p-6 shadow-lg relative overflow-hidden"
+              style={{
+                background: 'linear-gradient(90deg, #9BD9E6 -102.62%, #93D0E1 -73.81%, #80B7D5 -23.41%, #608FC1 36.59%, #3559A6 108.59%, #21409A 137.39%)'
+              }}
+            >
               <div className="relative z-10">
                 <div className="text-xs text-white/80 font-medium mb-2">New Game setup</div>
                 <h3 className="text-lg text-white font-semibold mb-4">
                   Start a new tournament, league, or<br />friendly competition
                 </h3>
-                <button className="bg-white text-blue-600 px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors">
+                <button 
+                  onClick={handleStartNew}
+                  className="bg-white text-[#3F3F3F] px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors"
+                >
                   Game Setup
                 </button>
               </div>
               
               {/* Basketball Trophy Illustration */}
-              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 w-40 h-40">
+              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 w-[262px] h-[262px]">
                 <div className="relative w-full h-full">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-28 h-28 bg-orange-600 rounded-full border-4 border-orange-700 shadow-xl">
-                      <BasketballIcon className="w-full h-full text-orange-800 p-4" />
-                    </div>
+                    <img 
+                      src="/champ.png" 
+                      alt="Trophy" 
+                      className="w-[262px] h-[262px] object-contain"
+                    />
                   </div>
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg border-2 border-yellow-600"></div>
                 </div>
               </div>
             </div>
@@ -276,16 +285,16 @@ const BasketballDashboard: React.FC = () => {
                   <div key={idx} className="bg-gray-50 rounded-xl p-4">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center">
-                          <BasketballIcon className="w-4 h-4 text-white" />
+                        <div className="flex items-center justify-center">
+                          <img src="/ball1.png" alt="Basketball" style={{ width: '35px', height: '35px' }} className="object-contain" />
                         </div>
                         <span className="text-sm text-gray-600">{game.teamA} - <span className="font-semibold text-gray-900">{game.scoreA}</span></span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-blue-400 rounded-lg flex items-center justify-center">
-                          <BasketballIcon className="w-4 h-4 text-white" />
+                        <div className="flex items-center justify-center">
+                          <img src="/ball2.png" alt="Basketball" style={{ width: '35px', height: '35px' }} className="object-contain" />
                         </div>
                         <span className="text-sm text-gray-600">{game.teamB} - <span className="font-semibold text-gray-900">{game.scoreB}</span></span>
                       </div>
