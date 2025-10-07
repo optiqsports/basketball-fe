@@ -81,14 +81,14 @@ const BasketballDashboard: React.FC = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl text-gray-700">
-            Welcome back <span className="font-bold text-gray-900">Ibrahim</span> <StarIcon className="inline w-6 h-6 text-yellow-400" />
+            Welcome back <span className="font-bold text-gray-900">Ibrahim</span>
           </h1>
-          <div className="flex items-center gap-3">
+          {/* <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-pink-300 rounded-full flex items-center justify-center text-white font-semibold">
               IM
             </div>
             <span className="text-gray-800 font-medium">Ibrahim Maina</span>
-          </div>
+          </div> */}
         </div>
 
         {/* Main Content Grid */}
