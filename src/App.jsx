@@ -1,8 +1,11 @@
 import React from 'react'
-import Wrapper from './components/wrapper'
+import { BrowserRouter } from 'react-router-dom'
+import AppRoutes from './routes'
 
 export default function App() {
   return (
-    <Wrapper />
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   )
 }

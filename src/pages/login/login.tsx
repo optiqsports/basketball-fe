@@ -1,20 +1,33 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaGoogle, FaApple } from 'react-icons/fa';
 
 const AdminLoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    console.log('Login clicked', { email, password });
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Simple authentication (replace with real API call)
+    if (email && password) {
+      localStorage.setItem('isAuthenticated', 'true');
+      navigate('/dashboard');
+    } else {
+      alert('Please enter email and password');
+    }
   };
 
   const handleGoogleLogin = () => {
-    console.log('Google login clicked');
+    // Simulate Google login
+    localStorage.setItem('isAuthenticated', 'true');
+    navigate('/dashboard');
   };
 
   const handleAppleLogin = () => {
-    console.log('Apple login clicked');
+    // Simulate Apple login
+    localStorage.setItem('isAuthenticated', 'true');
+    navigate('/dashboard');
   };
 
   const handleForgotPassword = () => {
@@ -42,7 +55,7 @@ const AdminLoginPage: React.FC = () => {
         </div>
 
         {/* Login Form */}
-        <div className="space-y-3.5">
+        <form onSubmit={handleLogin} className="space-y-3.5">
           {/* Email Input */}
           <input
             type="email"
@@ -63,11 +76,14 @@ const AdminLoginPage: React.FC = () => {
 
           {/* Login Button */}
           <button
-            onClick={handleLogin}
+            type="submit"
             className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-all text-base"
           >
             Login
           </button>
+        </form>
+
+        <div className="space-y-3.5 mt-3.5">
 
           {/* OR Divider */}
           <div className="flex items-center justify-center py-2">
