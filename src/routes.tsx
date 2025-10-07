@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/login/login';
+import ForgotPassword from './pages/login/ForgotPassword';
 import Dashboard from './pages/dashboard/dashboard';
 import Wrapper from './components/wrapper';
 
@@ -22,6 +23,7 @@ const AppRoutes: React.FC = () => {
     <Routes>
       {/* Public Routes */}
       <Route path="/login" element={<Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
       
       {/* Protected Routes - Wrapped in Layout */}
       <Route

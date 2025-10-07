@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Custom Icons
 const BasketballIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -9,6 +10,14 @@ const BasketballIcon: React.FC<{ className?: string }> = ({ className }) => (
     <path d="M2 12H22" stroke="currentColor" strokeWidth="1.5"/>
     <path d="M4 7H20" stroke="currentColor" strokeWidth="1.5"/>
     <path d="M4 17H20" stroke="currentColor" strokeWidth="1.5"/>
+  </svg>
+);
+
+const PlusCircleIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="12" r="10" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <line x1="12" y1="8" x2="12" y2="16" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <line x1="8" y1="12" x2="16" y2="12" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 
@@ -47,6 +56,7 @@ const ChevronRightIcon: React.FC<{ className?: string }> = ({ className }) => (
 );
 
 const BasketballDashboard: React.FC = () => {
+  const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const upNextGames = [
@@ -75,6 +85,10 @@ const BasketballDashboard: React.FC = () => {
     setCurrentSlide((prev) => (prev - 1 + upNextGames.length) % upNextGames.length);
   };
 
+  const handleStartNew = () => {
+    navigate('/start-new');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
@@ -83,12 +97,13 @@ const BasketballDashboard: React.FC = () => {
           <h1 className="text-3xl text-gray-700">
             Welcome back <span className="font-bold text-gray-900">Ibrahim</span>
           </h1>
-          {/* <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-pink-300 rounded-full flex items-center justify-center text-white font-semibold">
-              IM
-            </div>
-            <span className="text-gray-800 font-medium">Ibrahim Maina</span>
-          </div> */}
+          <button
+            onClick={handleStartNew}
+            className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-sm"
+          >
+            <PlusCircleIcon className="w-5 h-5" />
+            <span>Start New</span>
+          </button>
         </div>
 
         {/* Main Content Grid */}

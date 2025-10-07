@@ -31,7 +31,7 @@ const AdminLoginPage: React.FC = () => {
   };
 
   const handleForgotPassword = () => {
-    console.log('Forgot password clicked');
+    navigate('/forgot-password');
   };
 
   return (
