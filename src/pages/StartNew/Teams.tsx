@@ -2,6 +2,15 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FiChevronUp, FiChevronDown, FiPlus } from 'react-icons/fi'
 
+// Dummy data for countries and their states
+const countriesData: Record<string, string[]> = {
+  'United States': ['California', 'Texas', 'Florida', 'New York', 'Illinois', 'Pennsylvania', 'Ohio', 'Georgia'],
+  'Canada': ['Ontario', 'Quebec', 'British Columbia', 'Alberta', 'Manitoba', 'Saskatchewan'],
+  'United Kingdom': ['England', 'Scotland', 'Wales', 'Northern Ireland'],
+  'Australia': ['New South Wales', 'Victoria', 'Queensland', 'Western Australia', 'South Australia'],
+  'Nigeria': ['Lagos', 'Kano', 'Rivers', 'Kaduna', 'Oyo', 'Abuja'],
+};
+
 interface CoachingStaff {
   id: number;
   name: string;
@@ -16,6 +25,8 @@ interface Team {
   shortTeamCode: string;
   longTeamCode: string;
   teamColor: string;
+  country: string;
+  state: string;
   logo: File | null;
   isExpanded: boolean;
   coachingStaff: CoachingStaff[];
@@ -31,6 +42,8 @@ const Teams: React.FC = () => {
       shortTeamCode: 'ABC',
       longTeamCode: 'ABCDEF',
       teamColor: '#FF4444',
+      country: '',
+      state: '',
       logo: null,
       isExpanded: true,
       coachingStaff: [
@@ -49,6 +62,8 @@ const Teams: React.FC = () => {
       shortTeamCode: '',
       longTeamCode: '',
       teamColor: '#000000',
+      country: '',
+      state: '',
       logo: null,
       isExpanded: false,
       coachingStaff: [
@@ -85,8 +100,18 @@ const Teams: React.FC = () => {
     ));
   };
 
+  const handleTeamCountryChange = (teamId: number, newCountry: string) => {
+    setTeams(teams.map(team => 
+      team.id === teamId ? { ...team, country: newCountry, state: '' } : team
+    ));
+  };
+
   const handleLogoUpload = (id: number, file: File | null) => {
     updateTeam(id, 'logo', file);
+  };
+
+  const handlePrevious = () => {
+    navigate('/start-new');
   };
 
   const handleDiscard = () => {
@@ -210,6 +235,45 @@ const Teams: React.FC = () => {
                           </div>
                         </div>
                       </div>
+
+                      {/* Country and State/City */}
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Country
+                          </label>
+                          <select
+                            value={team.country}
+                            onChange={(e) => handleTeamCountryChange(team.id, e.target.value)}
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                          >
+                            <option value="">Select Country</option>
+                            {Object.keys(countriesData).map((countryName) => (
+                              <option key={countryName} value={countryName}>
+                                {countryName}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            State/City
+                          </label>
+                          <select
+                            value={team.state}
+                            onChange={(e) => updateTeam(team.id, 'state', e.target.value)}
+                            disabled={!team.country}
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          >
+                            <option value="">Select State/City</option>
+                            {team.country && countriesData[team.country]?.map((stateName) => (
+                              <option key={stateName} value={stateName}>
+                                {stateName}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
                     </div>
 
                     {/* Right Column - Logo Upload */}
@@ -261,57 +325,6 @@ const Teams: React.FC = () => {
                               <select
                                 value={staff.role}
                                 onChange={(e) => updateCoachingStaff(team.id, staff.id, 'role', e.target.value)}
-                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white appearance-none pr-10"
-                              >
-                                <option value="Coach">Coach</option>
-                                <option value="Assistant Coach">Assistant Coach</option>
-                                <option value="Head Coach">Head Coach</option>
-                                <option value="Trainer">Trainer</option>
-                              </select>
-                              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                <FiChevronDown className="text-gray-400" />
-                              </div>
-                              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 pointer-events-none">
-                                Role
-                              </span>
-                              <span className="absolute left-16 top-1/2 -translate-y-1/2 text-sm text-gray-900 pointer-events-none">
-                                {staff.role}
-                              </span>
-                            </div>
-                          </div>
-                          <input
-                            type="text"
-                            placeholder="Country"
-                            value={staff.country}
-                            onChange={(e) => updateCoachingStaff(team.id, staff.id, 'country', e.target.value)}
-                            className="col-span-3 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Coaching Staff Section */}
-                  <div className="border-t border-gray-200 pt-6 mt-6">
-                    <h3 className="text-base font-semibold text-gray-800 mb-4">Coaching Staff</h3>
-                    <div className="space-y-3">
-                      {team.coachingStaff.map((staff, index) => (
-                        <div key={staff.id} className="grid grid-cols-12 gap-3 items-center">
-                          <div className="col-span-1 text-sm text-gray-600 font-medium">
-                            {index + 1}.
-                          </div>
-                          <input
-                            type="text"
-                            placeholder="Name Surname"
-                            value={staff.name}
-                            onChange={(e) => updateCoachingStaff(team.id, staff.id, 'name', e.target.value)}
-                            className="col-span-4 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                          />
-                          <div className="col-span-4">
-                            <div className="relative">
-                              <select
-                                value={staff.role}
-                                onChange={(e) => updateCoachingStaff(team.id, staff.id, 'role', e.target.value)}
                                 className="w-full px-4 py-2.5 pl-14 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white appearance-none pr-10"
                               >
                                 <option value="Coach">Coach</option>
@@ -327,13 +340,18 @@ const Teams: React.FC = () => {
                               </div>
                             </div>
                           </div>
-                          <input
-                            type="text"
-                            placeholder="Country"
+                          <select
                             value={staff.country}
                             onChange={(e) => updateCoachingStaff(team.id, staff.id, 'country', e.target.value)}
-                            className="col-span-3 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                          />
+                            className="col-span-3 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                          >
+                            <option value="">Select Country</option>
+                            {Object.keys(countriesData).map((countryName) => (
+                              <option key={countryName} value={countryName}>
+                                {countryName}
+                              </option>
+                            ))}
+                          </select>
                         </div>
                       ))}
                     </div>
@@ -346,12 +364,20 @@ const Teams: React.FC = () => {
 
         {/* Action Buttons */}
         <div className="flex justify-between items-center gap-3">
-          <button
-            onClick={handleDiscard}
-            className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-          >
-            Discard
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={handlePrevious}
+              className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+            >
+              Previous
+            </button>
+            <button
+              onClick={handleDiscard}
+              className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+            >
+              Discard
+            </button>
+          </div>
           <div className="flex gap-3">
             <button
               onClick={addTeam}

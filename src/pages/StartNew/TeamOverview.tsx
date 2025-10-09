@@ -56,6 +56,10 @@ const TeamOverview: React.FC = () => {
     console.log('Team deleted:', teamId);
   };
 
+  const handlePrevious = () => {
+    navigate('/players');
+  };
+
   const handleCancel = () => {
     console.log('Form cancelled');
     navigate('/players');
@@ -139,13 +143,21 @@ const TeamOverview: React.FC = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-end items-center gap-3">
-          <button
-            onClick={handleCancel}
-            className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-          >
-            Cancel
-          </button>
+        <div className="flex justify-between items-center gap-3">
+          <div className="flex gap-3">
+            <button
+              onClick={handlePrevious}
+              className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+            >
+              Previous
+            </button>
+            <button
+              onClick={handleCancel}
+              className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+            >
+              Cancel
+            </button>
+          </div>
           <button
             onClick={handleSaveNext}
             className="px-6 py-2.5 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors font-medium"

@@ -8,22 +8,32 @@ interface Official {
   shirtNumber: string;
 }
 
+// Dummy data for countries and their states
+const countriesData: Record<string, string[]> = {
+  'United States': ['California', 'Texas', 'Florida', 'New York', 'Illinois', 'Pennsylvania', 'Ohio', 'Georgia'],
+  'Canada': ['Ontario', 'Quebec', 'British Columbia', 'Alberta', 'Manitoba', 'Saskatchewan'],
+  'United Kingdom': ['England', 'Scotland', 'Wales', 'Northern Ireland'],
+  'Australia': ['New South Wales', 'Victoria', 'Queensland', 'Western Australia', 'South Australia'],
+  'Nigeria': ['Lagos', 'Kano', 'Rivers', 'Kaduna', 'Oyo', 'Abuja'],
+};
+
 const StartNew: React.FC = () => {
   const navigate = useNavigate();
   const [competitionName, setCompetitionName] = useState('');
+  const [competitionShortName, setCompetitionShortName] = useState('');
+  const [division, setDivision] = useState('');
   const [numberOfGames, setNumberOfGames] = useState('28');
   const [numberOfQuarters, setNumberOfQuarters] = useState('4');
   const [quarterDuration, setQuarterDuration] = useState('10 Mins');
   const [overtimeDuration, setOvertimeDuration] = useState('10 Mins');
-  const [day, setDay] = useState('');
-  const [month, setMonth] = useState('');
-  const [year, setYear] = useState('');
-  const [time, setTime] = useState('10:17');
-  const [period, setPeriod] = useState('AM');
+  const [date, setDate] = useState('');
   const [court, setCourt] = useState('');
-  const [state, setState] = useState('');
   const [country, setCountry] = useState('');
+  const [state, setState] = useState('');
   const [flyer, setFlyer] = useState<File | null>(null);
+  
+  // Get available states based on selected country
+  const availableStates = country ? countriesData[country] || [] : [];
 
   const [officials, setOfficials] = useState<Official[]>([
     { id: 1, name: '', role: 'Crew Chief', shirtNumber: '' },
@@ -36,6 +46,11 @@ const StartNew: React.FC = () => {
     setOfficials(officials.map(official => 
       official.id === id ? { ...official, [field]: value } : official
     ));
+  };
+
+  const handleCountryChange = (newCountry: string) => {
+    setCountry(newCountry);
+    setState(''); // Reset state when country changes
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,6 +90,32 @@ const StartNew: React.FC = () => {
                 placeholder="Name Here"
                 value={competitionName}
                 onChange={(e) => setCompetitionName(e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+              />
+            </div>
+
+            {/* Competition Short Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Competition Short Name</label>
+              <input
+                type="text"
+                placeholder="Short Name"
+                value={competitionShortName}
+                onChange={(e) => setCompetitionShortName(e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+              />
+            </div>
+
+            {/* Division (Optional) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Division <span className="text-gray-400 font-normal">(Optional)</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Division Name"
+                value={division}
+                onChange={(e) => setDivision(e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
               />
             </div>
@@ -123,44 +164,15 @@ const StartNew: React.FC = () => {
               </div>
             </div>
 
-            {/* Date and Time */}
+            {/* Date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Date and Time</label>
-              <div className="grid grid-cols-7 gap-2">
-                <input
-                  type="text"
-                  placeholder="Day"
-                  value={day}
-                  onChange={(e) => setDay(e.target.value)}
-                  className="col-span-1 px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-center"
-                />
-                <input
-                  type="text"
-                  placeholder="Month"
-                  value={month}
-                  onChange={(e) => setMonth(e.target.value)}
-                  className="col-span-2 px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-center"
-                />
-                <input
-                  type="text"
-                  placeholder="Year"
-                  value={year}
-                  onChange={(e) => setYear(e.target.value)}
-                  className="col-span-1 px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-center"
-                />
-                <input
-                  type="text"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                  className="col-span-2 px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-center"
-                />
-                <button
-                  onClick={() => setPeriod(period === 'AM' ? 'PM' : 'AM')}
-                  className="col-span-1 px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 hover:bg-gray-50 transition-colors"
-                >
-                  {period}
-                </button>
-              </div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+              />
             </div>
 
             {/* Venue */}
@@ -174,20 +186,31 @@ const StartNew: React.FC = () => {
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 mb-3"
               />
               <div className="grid grid-cols-2 gap-3">
-                <input
-                  type="text"
-                  placeholder="State"
+                <select
+                  value={country}
+                  onChange={(e) => handleCountryChange(e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                >
+                  <option value="">Select Country</option>
+                  {Object.keys(countriesData).map((countryName) => (
+                    <option key={countryName} value={countryName}>
+                      {countryName}
+                    </option>
+                  ))}
+                </select>
+                <select
                   value={state}
                   onChange={(e) => setState(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                />
-                <input
-                  type="text"
-                  placeholder="Country"
-                  value={country}
-                  onChange={(e) => setCountry(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                />
+                  disabled={!country}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                >
+                  <option value="">Select State</option>
+                  {availableStates.map((stateName) => (
+                    <option key={stateName} value={stateName}>
+                      {stateName}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 

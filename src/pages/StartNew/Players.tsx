@@ -1,6 +1,14 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FiChevronUp, FiChevronDown } from 'react-icons/fi'
+import { FiChevronUp, FiChevronDown, FiPlus } from 'react-icons/fi'
+
+const basketballPositions = [
+  'Point Guard',
+  'Shooting Guard',
+  'Small Forward',
+  'Power Forward',
+  'Center'
+];
 
 interface Player {
   id: number;
@@ -8,7 +16,7 @@ interface Player {
   name: string;
   height: string;
   position: string;
-  age: string;
+  dob: string;
   captain: boolean;
 }
 
@@ -26,27 +34,27 @@ const Players: React.FC = () => {
       id: 1,
       teamName: 'Team Name',
       isExpanded: true,
-      players: Array.from({ length: 12 }, (_, i) => ({
+      players: Array.from({ length: 5 }, (_, i) => ({
         id: i + 1,
         no: '',
         name: '',
-        height: 'H',
-        position: 'F',
-        age: '17',
-        captain: i === 1, // Second player is captain by default
+        height: '',
+        position: '',
+        dob: '',
+        captain: i === 0, // First player is captain by default
       })),
     },
     {
       id: 2,
       teamName: 'Team Name',
       isExpanded: false,
-      players: Array.from({ length: 12 }, (_, i) => ({
+      players: Array.from({ length: 5 }, (_, i) => ({
         id: i + 1,
         no: '',
         name: '',
-        height: 'H',
-        position: 'F',
-        age: '17',
+        height: '',
+        position: '',
+        dob: '',
         captain: false,
       })),
     },
@@ -57,17 +65,35 @@ const Players: React.FC = () => {
       id: teams.length + 1,
       teamName: 'Team Name',
       isExpanded: false,
-      players: Array.from({ length: 12 }, (_, i) => ({
+      players: Array.from({ length: 5 }, (_, i) => ({
         id: i + 1,
         no: '',
         name: '',
-        height: 'H',
-        position: 'F',
-        age: '17',
+        height: '',
+        position: '',
+        dob: '',
         captain: false,
       })),
     };
     setTeams([...teams, newTeam]);
+  };
+
+  const addPlayer = (teamId: number) => {
+    setTeams(teams.map(team => {
+      if (team.id === teamId) {
+        const newPlayer: Player = {
+          id: team.players.length + 1,
+          no: '',
+          name: '',
+          height: '',
+          position: '',
+          dob: '',
+          captain: false,
+        };
+        return { ...team, players: [...team.players, newPlayer] };
+      }
+      return team;
+    }));
   };
 
   const toggleTeam = (id: number) => {
@@ -104,6 +130,10 @@ const Players: React.FC = () => {
     ));
   };
 
+  const handlePrevious = () => {
+    navigate('/teams');
+  };
+
   const handleDiscard = () => {
     console.log('Form discarded');
     navigate('/teams');
@@ -119,11 +149,22 @@ const Players: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-semibold text-gray-800 mb-3">Players</h1>
-          <div className="flex gap-2">
-            <div className="w-24 h-1 bg-green-500"></div>
-            <div className="w-16 h-1 bg-green-500"></div>
-            <div className="w-20 h-1 bg-green-500"></div>
+          <div className="flex justify-between items-start mb-3">
+            <div>
+              <h1 className="text-2xl font-semibold text-gray-800 mb-3">Players</h1>
+              <div className="flex gap-2">
+                <div className="w-24 h-1 bg-green-500"></div>
+                <div className="w-16 h-1 bg-green-500"></div>
+                <div className="w-20 h-1 bg-green-500"></div>
+              </div>
+            </div>
+            <button
+              onClick={addTeam}
+              className="flex items-center gap-2 px-6 py-2.5 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            >
+              <FiPlus className="text-lg" />
+              Add Team
+            </button>
           </div>
         </div>
 
@@ -149,14 +190,25 @@ const Players: React.FC = () => {
               {/* Players Table - Collapsible */}
               {team.isExpanded && (
                 <div className="px-6 pb-6 pt-4">
+                  {/* Add Player Button - Top Right */}
+                  <div className="flex justify-end mb-4">
+                    <button
+                      onClick={() => addPlayer(team.id)}
+                      className="flex items-center gap-2 px-4 py-2 text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors font-medium text-sm"
+                    >
+                      <FiPlus className="text-lg" />
+                      Add Player
+                    </button>
+                  </div>
+
                   {/* Table Header */}
                   <div className="grid grid-cols-12 gap-3 mb-3 pb-2 border-b border-gray-200">
-                    <div className="col-span-1 text-sm font-medium text-gray-600">NO</div>
-                    <div className="col-span-4 text-sm font-medium text-gray-600">Player Name</div>
-                    <div className="col-span-2 text-sm font-medium text-gray-600">Height</div>
-                    <div className="col-span-2 text-sm font-medium text-gray-600">Position</div>
-                    <div className="col-span-1 text-sm font-medium text-gray-600">Age</div>
-                    <div className="col-span-2 text-sm font-medium text-gray-600">Captain</div>
+                    <div className="col-span-1 text-sm font-medium text-gray-600 text-center">NO</div>
+                    <div className="col-span-3 text-sm font-medium text-gray-600 text-center">Player Name</div>
+                    <div className="col-span-2 text-sm font-medium text-gray-600 text-center">Height</div>
+                    <div className="col-span-2 text-sm font-medium text-gray-600 text-center">Position</div>
+                    <div className="col-span-2 text-sm font-medium text-gray-600 text-center">DOB</div>
+                    <div className="col-span-2 text-sm font-medium text-gray-600 text-center">Captain</div>
                   </div>
 
                   {/* Player Rows */}
@@ -170,18 +222,18 @@ const Players: React.FC = () => {
                             placeholder="NO."
                             value={player.no}
                             onChange={(e) => updatePlayer(team.id, player.id, 'no', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm text-center placeholder:text-center"
                           />
                         </div>
 
                         {/* Player Name */}
-                        <div className="col-span-4">
+                        <div className="col-span-3">
                           <input
                             type="text"
                             placeholder="Name Surname"
                             value={player.name}
                             onChange={(e) => updatePlayer(team.id, player.id, 'name', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm text-center placeholder:text-center"
                           />
                         </div>
 
@@ -189,28 +241,36 @@ const Players: React.FC = () => {
                         <div className="col-span-2">
                           <input
                             type="text"
+                            placeholder="Height"
                             value={player.height}
                             onChange={(e) => updatePlayer(team.id, player.id, 'height', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm text-center"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm text-center placeholder:text-center"
                           />
                         </div>
 
                         {/* Position */}
                         <div className="col-span-2">
-                          <input
-                            type="text"
+                          <select
                             value={player.position}
                             onChange={(e) => updatePlayer(team.id, player.id, 'position', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm text-center"
-                          />
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm bg-white text-center"
+                          >
+                            <option value="">Position</option>
+                            {basketballPositions.map((pos) => (
+                              <option key={pos} value={pos}>
+                                {pos}
+                              </option>
+                            ))}
+                          </select>
                         </div>
 
-                        {/* Age */}
-                        <div className="col-span-1">
+                        {/* DOB */}
+                        <div className="col-span-2">
                           <input
-                            type="text"
-                            value={player.age}
-                            onChange={(e) => updatePlayer(team.id, player.id, 'age', e.target.value)}
+                            type="date"
+                            placeholder="DOB"
+                            value={player.dob}
+                            onChange={(e) => updatePlayer(team.id, player.id, 'dob', e.target.value)}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm text-center"
                           />
                         </div>
@@ -239,26 +299,26 @@ const Players: React.FC = () => {
 
         {/* Action Buttons */}
         <div className="flex justify-between items-center gap-3">
-          <button
-            onClick={handleDiscard}
-            className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-          >
-            Discard
-          </button>
           <div className="flex gap-3">
             <button
-              onClick={addTeam}
-              className="px-6 py-2.5 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+              onClick={handlePrevious}
+              className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
             >
-              Add Team
+              Previous
             </button>
             <button
-              onClick={handleSaveNext}
-              className="px-6 py-2.5 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+              onClick={handleDiscard}
+              className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
             >
-              Save & Next
+              Discard
             </button>
           </div>
+          <button
+            onClick={handleSaveNext}
+            className="px-6 py-2.5 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          >
+            Save & Next
+          </button>
         </div>
       </div>
     </div>

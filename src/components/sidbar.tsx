@@ -58,12 +58,10 @@ const Sidebar: React.FC<SidebarProps> = ({ activeItem = '' }) => {
   return (
     <div className="w-60 h-screen bg-[#F8F8F8] border-r border-gray-200 flex flex-col">
       {/* Logo Section */}
-      <div className="px-6 py-6 border-b border-gray-200">
+      <div className="px-2 py-2 border-b border-gray-200">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-400 via-blue-500 to-blue-700 rounded-lg flex items-center justify-center">
-            <div className="w-3 h-3 border-2 border-white rounded-sm transform rotate-45"></div>
-          </div>
-          <span className="text-lg font-semibold text-gray-800">OptiqSports</span>
+        <img src="/logo.png" alt="logo" className='w-10 h-10 ' />
+          <span className="text-sm font-semibold text-gray-800">OptiqSports</span>
         </div>
       </div>
 

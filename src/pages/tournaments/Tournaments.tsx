@@ -46,17 +46,17 @@ const CompetitionDetailPage: React.FC = () => {
   const [matchCode] = useState('ABC123XYZ');
 
   const teams: Team[] = [
-    { id: 1, name: 'TEAM', color: 'bg-yellow-400', gp: 0, w: 0, l: 0, percent: 0, points: 0 },
-    { id: 2, name: 'TEAM', color: 'bg-red-400', gp: 0, w: 0, l: 0, percent: 0, points: 0 },
-    { id: 3, name: 'TEAM', color: 'bg-yellow-500', gp: 0, w: 0, l: 0, percent: 0, points: 0 },
-    { id: 4, name: 'TEAM', color: 'bg-blue-400', gp: 0, w: 0, l: 0, percent: 0, points: 0 },
-    { id: 5, name: 'TEAM', color: 'bg-green-400', gp: 0, w: 0, l: 0, percent: 0, points: 0 },
+    { id: 1, name: 'TEAM', color: 'yellow', gp: 0, w: 0, l: 0, percent: 0, points: 0 },
+    { id: 2, name: 'TEAM', color: 'yellow', gp: 0, w: 0, l: 0, percent: 0, points: 0 },
+    { id: 3, name: 'TEAM', color: 'yellow', gp: 0, w: 0, l: 0, percent: 0, points: 0 },
+    { id: 4, name: 'TEAM', color: 'blue', gp: 0, w: 0, l: 0, percent: 0, points: 0 },
+    { id: 5, name: 'TEAM', color: 'blue', gp: 0, w: 0, l: 0, percent: 0, points: 0 },
   ];
 
   const matches: Match[] = [
-    { id: 1, teamA: 'TEAM A', teamAColor: 'bg-yellow-400', teamB: 'TEAM B', teamBColor: 'bg-blue-400', venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
-    { id: 2, teamA: 'TEAM A', teamAColor: 'bg-yellow-400', teamB: 'TEAM B', teamBColor: 'bg-blue-400', venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
-    { id: 3, teamA: 'TEAM A', teamAColor: 'bg-yellow-400', teamB: 'TEAM B', teamBColor: 'bg-blue-400', venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
+    { id: 1, teamA: 'TEAM A', teamAColor: 'yellow', teamB: 'TEAM B', teamBColor: 'blue', venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
+    { id: 2, teamA: 'TEAM A', teamAColor: 'yellow', teamB: 'TEAM B', teamBColor: 'blue', venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
+    { id: 3, teamA: 'TEAM A', teamAColor: 'yellow', teamB: 'TEAM B', teamBColor: 'blue', venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
   ];
 
   const handleCopyCode = () => {
@@ -93,8 +93,8 @@ const CompetitionDetailPage: React.FC = () => {
 
           <div className="flex items-center justify-center gap-8">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-yellow-400 rounded-lg flex items-center justify-center">
-                <BasketballIcon className="w-6 h-6 text-white" />
+              <div className="flex items-center justify-center">
+                <img src="/ball1.png" alt="Basketball" style={{ width: '35px', height: '35px' }} className="object-contain" />
               </div>
               <div>
                 <div className="text-xs text-gray-500 mb-1">TEAM A</div>
@@ -109,8 +109,8 @@ const CompetitionDetailPage: React.FC = () => {
                 <div className="text-xs text-gray-500 mb-1 text-right">TEAM B</div>
                 <div className="text-4xl font-bold text-gray-900">12</div>
               </div>
-              <div className="w-12 h-12 bg-blue-400 rounded-lg flex items-center justify-center">
-                <BasketballIcon className="w-6 h-6 text-white" />
+              <div className="flex items-center justify-center">
+                <img src="/ball2.png" alt="Basketball" style={{ width: '35px', height: '35px' }} className="object-contain" />
               </div>
             </div>
           </div>
@@ -163,8 +163,13 @@ const CompetitionDetailPage: React.FC = () => {
                     <tr key={team.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                       <td className="py-3 px-2">
                         <div className="flex items-center gap-3">
-                          <div className={`w-8 h-8 ${team.color} rounded-lg flex items-center justify-center`}>
-                            <BasketballIcon className="w-4 h-4 text-white" />
+                          <div className="flex items-center justify-center">
+                            <img 
+                              src={team.color === 'yellow' ? '/ball1.png' : '/ball2.png'} 
+                              alt="Basketball" 
+                              style={{ width: '35px', height: '35px' }} 
+                              className="object-contain" 
+                            />
                           </div>
                           <span className="text-sm text-gray-700">{team.name}</span>
                         </div>
@@ -187,15 +192,25 @@ const CompetitionDetailPage: React.FC = () => {
               <div key={match.id} className="bg-white rounded-2xl shadow-sm p-5">
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 ${match.teamAColor} rounded-lg flex items-center justify-center`}>
-                      <BasketballIcon className="w-5 h-5 text-white" />
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={match.teamAColor === 'yellow' ? '/ball1.png' : '/ball2.png'} 
+                        alt="Basketball" 
+                        style={{ width: '35px', height: '35px' }} 
+                        className="object-contain" 
+                      />
                     </div>
                     <span className="text-sm font-medium text-gray-700">{match.teamA}</span>
                   </div>
                   
                   <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 ${match.teamBColor} rounded-lg flex items-center justify-center`}>
-                      <BasketballIcon className="w-5 h-5 text-white" />
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={match.teamBColor === 'yellow' ? '/ball1.png' : '/ball2.png'} 
+                        alt="Basketball" 
+                        style={{ width: '35px', height: '35px' }} 
+                        className="object-contain" 
+                      />
                     </div>
                     <span className="text-sm font-medium text-gray-700">{match.teamB}</span>
                   </div>

@@ -38,10 +38,8 @@ const AdminLoginPage: React.FC = () => {
     <div className="min-h-screen w-full bg-[#F5FCFF] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="flex justify-center mb-8">
-          <div className="w-20 h-20 bg-gradient-to-br from-blue-400 via-blue-500 to-blue-700 rounded-3xl flex items-center justify-center shadow-lg">
-            <div className="w-8 h-8 border-4 border-white rounded-lg transform rotate-45"></div>
-          </div>
+        <div className="flex justify-center">
+          <img src="/logo.png" alt="logo" className='w-40 h-40 ' />
         </div>
 
         {/* Welcome Text */}
