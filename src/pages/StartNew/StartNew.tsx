@@ -79,9 +79,11 @@ const StartNew: React.FC = () => {
           <div className="w-24 h-1 bg-green-500 mt-2"></div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Form */}
-          <div className="lg:col-span-2 bg-white rounded-lg shadow-sm p-6 space-y-6">
+        {/* Form Container */}
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            {/* Left Column - Form Fields */}
+            <div className="lg:col-span-3 space-y-6">
             {/* Competition Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Competition</label>
@@ -226,13 +228,13 @@ const StartNew: React.FC = () => {
                       placeholder="Name Surname"
                       value={official.name}
                       onChange={(e) => handleOfficialChange(official.id, 'name', e.target.value)}
-                      className="col-span-5 px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                      className="col-span-6 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                     />
                     <div className="col-span-3">
                       <select
                         value={official.role}
                         onChange={(e) => handleOfficialChange(official.id, 'role', e.target.value)}
-                        className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
                       >
                         <option value="Crew Chief">Crew Chief</option>
                         <option value="Umpire">Umpire</option>
@@ -242,43 +244,27 @@ const StartNew: React.FC = () => {
                     </div>
                     <input
                       type="text"
-                      placeholder="Shirt Number"
+                      placeholder="Shirt No."
                       value={official.shirtNumber}
                       onChange={(e) => handleOfficialChange(official.id, 'shirtNumber', e.target.value)}
-                      className="col-span-3 px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                      className="col-span-2 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                     />
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex justify-end gap-3 pt-4">
-              <button
-                onClick={handleDiscard}
-                className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-              >
-                Discard
-              </button>
-              <button
-                onClick={handleSaveNext}
-                className="px-6 py-2.5 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-              >
-                Save & Next
-              </button>
             </div>
-          </div>
 
-          {/* Right Column - Upload Flyer */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            {/* Right Column - Upload Flyer */}
+            <div className="lg:col-span-1">
               <label
                 htmlFor="flyer-upload"
                 className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-gray-400 transition-colors bg-gray-50"
               >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-3">
-                    <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center mb-3">
+                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                     </svg>
                   </div>
@@ -298,6 +284,22 @@ const StartNew: React.FC = () => {
                 </p>
               )}
             </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-3 pt-6 border-t border-gray-200 mt-6">
+            <button
+              onClick={handleDiscard}
+              className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+            >
+              Discard
+            </button>
+            <button
+              onClick={handleSaveNext}
+              className="px-6 py-2.5 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            >
+              Save & Next
+            </button>
           </div>
         </div>
       </div>

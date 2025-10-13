@@ -16,8 +16,8 @@ const Navbar: React.FC<NavbarProps> = ({
 }) => {
   return (
     <nav className="h-20 bg-[#F8F8F8] border-b border-gray-200 px-6 flex items-center justify-between">
-      {/* Left Section - Menu & Search */}
-      <div className="flex items-center gap-4 flex-1">
+      {/* Left Section - Logo & Mobile Menu */}
+      <div className="flex items-center gap-4">
         {/* Mobile Menu Button */}
         <button 
           onClick={onMenuClick}
@@ -26,8 +26,16 @@ const Navbar: React.FC<NavbarProps> = ({
           <HiMenu className="text-2xl text-gray-600" />
         </button>
 
-        {/* Search Bar */}
-        <div className="relative max-w-md w-full">
+        {/* Logo - Hidden on mobile, visible on desktop */}
+        <div className="hidden lg:flex items-center gap-3">
+          <img src="/logo.png" alt="logo" className='w-10 h-10' />
+          <span className="text-lg font-semibold text-gray-800">OptiqSports</span>
+        </div>
+      </div>
+
+      {/* Center Section - Search Bar (Desktop Only) */}
+      <div className="hidden lg:flex flex-1 justify-center px-8">
+        <div className="relative max-w-2xl w-full">
           <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
           <input
             type="text"
