@@ -8,6 +8,7 @@ import Teams from '../pages/StartNew/Teams'
 import Players from '../pages/StartNew/Players'
 import TeamOverview from '../pages/StartNew/TeamOverview'
 import Complete from '../pages/StartNew/Complete'
+import TournamentsListing from '../pages/tournaments/TournamentsListing'
 import Tournaments from '../pages/tournaments/Tournaments'
 
 const Wrapper: React.FC = () => {
@@ -66,7 +67,8 @@ const Wrapper: React.FC = () => {
             <Route path="/players" element={<Players />} />
             <Route path="/team-overview" element={<TeamOverview />} />
             <Route path="/complete" element={<Complete />} />
-            <Route path="/tournaments" element={<Tournaments />} />
+            <Route path="/tournaments" element={<TournamentsListing />} />
+            <Route path="/tournaments/:id" element={<Tournaments />} />
             <Route path="/results" element={<div className="p-8"><h1 className="text-2xl font-bold">Results</h1></div>} />
             <Route path="/statisticians" element={<div className="p-8"><h1 className="text-2xl font-bold">Statisticians</h1></div>} />
             <Route path="/" element={<Dashboard />} />

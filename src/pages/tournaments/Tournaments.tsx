@@ -68,18 +68,13 @@ const CompetitionDetailPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-semibold text-gray-800">Competition Name</h1>
-          <div className="flex items-center gap-3">
-            {/* <div className="w-10 h-10 bg-pink-300 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-              IM
-            </div>
-            <span className="text-gray-800 font-medium">Ibrahim Maina</span> */}
-          </div>
+        <div className="mb-6">
+          <h1 className="text-2xl font-semibold text-gray-800">Competition Name</h1>
+          <div className="w-24 h-1 bg-green-500 mt-2"></div>
         </div>
 
         {/* Ongoing Game Card */}
-        <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
+        <div className="rounded-lg shadow-sm p-6 mb-6 border" style={{ background: '#FCFEFF', border: '1px solid #A9A9A91A' }}>
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-sm font-semibold text-gray-700">Ongoing Game</h2>
             <button 
@@ -121,26 +116,26 @@ const CompetitionDetailPage: React.FC = () => {
         </div>
 
         {/* Group Tabs */}
-        <div className="flex gap-2 mb-6">
-          {['A', 'B', 'C', 'D'].map((group) => (
-            <button
-              key={group}
-              onClick={() => setActiveGroup(group)}
-              className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
-                activeGroup === group
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-white text-gray-600 hover:bg-gray-100'
-              }`}
-            >
-              Group {group}
-            </button>
-          ))}
-        </div>
+          <div className="flex justify-center gap-2 mb-6">
+            {['A', 'B', 'C', 'D'].map((group) => (
+              <button
+                key={group}
+                onClick={() => setActiveGroup(group)}
+                className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
+                  activeGroup === group
+                    ? 'bg-[#21409A] text-white shadow-md'
+                    : 'bg-white text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                Group {group}
+              </button>
+            ))}
+          </div>
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Standings Table */}
-          <div className="bg-white rounded-2xl shadow-sm p-6">
+          <div className="rounded-lg shadow-sm p-6 border" style={{ background: '#FCFEFF', border: '1px solid #A9A9A91A' }}>
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-gray-800">Group {activeGroup}</h2>
               <p className="text-sm text-gray-500">0/10 Games Played</p>
@@ -189,36 +184,40 @@ const CompetitionDetailPage: React.FC = () => {
           {/* Matches List */}
           <div className="space-y-4">
             {matches.map((match) => (
-              <div key={match.id} className="bg-white rounded-2xl shadow-sm p-5">
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center">
-                      <img 
-                        src={match.teamAColor === 'yellow' ? '/ball1.png' : '/ball2.png'} 
-                        alt="Basketball" 
-                        style={{ width: '35px', height: '35px' }} 
-                        className="object-contain" 
-                      />
+              <div key={match.id} className="rounded-lg shadow-sm p-5 border" style={{ background: '#FCFEFF', border: '1px solid #A9A9A91A' }}>
+                <div className="flex justify-between items-start">
+                  {/* Teams (left) */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center">
+                        <img 
+                          src={match.teamAColor === 'yellow' ? '/ball1.png' : '/ball2.png'} 
+                          alt="Basketball" 
+                          style={{ width: '35px', height: '35px' }} 
+                          className="object-contain" 
+                        />
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{match.teamA}</span>
                     </div>
-                    <span className="text-sm font-medium text-gray-700">{match.teamA}</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center">
-                      <img 
-                        src={match.teamBColor === 'yellow' ? '/ball1.png' : '/ball2.png'} 
-                        alt="Basketball" 
-                        style={{ width: '35px', height: '35px' }} 
-                        className="object-contain" 
-                      />
+                    
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center">
+                        <img 
+                          src={match.teamBColor === 'yellow' ? '/ball1.png' : '/ball2.png'} 
+                          alt="Basketball" 
+                          style={{ width: '35px', height: '35px' }} 
+                          className="object-contain" 
+                        />
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{match.teamB}</span>
                     </div>
-                    <span className="text-sm font-medium text-gray-700">{match.teamB}</span>
                   </div>
-                </div>
 
-                <div className="mt-4 pt-3 border-t border-gray-100 text-xs text-gray-500 space-y-1">
-                  <div>{match.venue}</div>
-                  <div>{match.time}</div>
+                  {/* Venue/Time (right) */}
+                  <div className="text-xs text-gray-500 text-right self-center space-y-1">
+                    <div>{match.venue}</div>
+                    <div>{match.time}</div>
+                  </div>
                 </div>
               </div>
             ))}
