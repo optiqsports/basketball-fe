@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import MatchPage from '../pages/tournaments/Match'
+import PlayerDetails from '../pages/tournaments/PlayerDetails'
 import Navbar from './navbar'
 import Sidebar from './sidbar'
 import Dashboard from '../pages/dashboard/dashboard'
@@ -71,6 +72,7 @@ const Wrapper: React.FC = () => {
             <Route path="/tournaments" element={<TournamentsListing />} />
             <Route path="/tournaments/:id" element={<Tournaments />} />
             <Route path="/tournaments/:id/match/:matchId" element={<MatchPage />} />
+            <Route path="/tournaments/:id/match/:matchId/player/:playerId" element={<PlayerDetails />} />
             <Route path="/results" element={<div className="p-8"><h1 className="text-2xl font-bold">Results</h1></div>} />
             <Route path="/statisticians" element={<div className="p-8"><h1 className="text-2xl font-bold">Statisticians</h1></div>} />
             <Route path="/" element={<Dashboard />} />

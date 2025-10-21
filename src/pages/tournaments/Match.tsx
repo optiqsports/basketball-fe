@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
 // Basketball Icon Component
 const BasketballIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -32,6 +33,8 @@ interface Player {
 type LeaderCategory = 'points' | 'rebounds' | 'assists' | 'block' | 'steals';
 
 const GameScorePage: React.FC = () => {
+  const { id, matchId } = useParams<{ id: string; matchId: string }>();
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState<LeaderCategory>('points');
   const [showBoxScore, setShowBoxScore] = useState(false);
   const [activeTeam, setActiveTeam] = useState<'A' | 'B'>('A');
@@ -49,6 +52,10 @@ const GameScorePage: React.FC = () => {
 
   const handleViewBoxScore = () => {
     setShowBoxScore(true);
+  };
+
+  const handlePlayerClick = (playerId: number) => {
+    navigate(`/tournaments/${id}/match/${matchId}/player/${playerId}`);
   };
 
   return (
@@ -305,7 +312,7 @@ const GameScorePage: React.FC = () => {
             <div className="overflow-x-auto rounded-lg border border-gray-200">
               <table className="w-full">
                 <thead>
-                  <tr style={{ background: '#F5F8FF' }}>
+                  <tr style={{ background: '#EEF3FF' }}>
                     <th className="text-left py-3 px-3 text-xs font-bold text-blue-900">#</th>
                     <th className="text-left py-3 px-3 text-xs font-bold text-blue-900">PLAYER</th>
                     <th className="text-center py-3 px-3 text-xs font-bold text-blue-900">PTS</th>
@@ -329,7 +336,8 @@ const GameScorePage: React.FC = () => {
                   {[1, 2, 3, 4, 5, 6].map((playerNum) => (
                     <tr 
                       key={playerNum}
-                      className={playerNum % 2 === 1 ? 'bg-gray-50' : 'bg-white'}
+                      className={`${playerNum % 2 === 1 ? 'bg-gray-50' : 'bg-white'} hover:bg-blue-50 cursor-pointer transition-colors`}
+                      onClick={() => handlePlayerClick(playerNum)}
                     >
                       <td className="py-3 px-3 text-sm font-bold text-blue-900">8</td>
                       <td className="py-3 px-3">
@@ -373,8 +381,52 @@ const GameScorePage: React.FC = () => {
                       <td className="text-center py-3 px-3 text-sm text-gray-700">8</td>
                     </tr>
                   ))}
+                  {/* Total Row */}
+                  <tr style={{ background: '#F5F8FF' }}>
+                    <td className="py-3 px-3 text-sm font-bold text-blue-900"></td>
+                    <td className="py-3 px-3 text-sm font-bold text-blue-900">Total</td>
+                    <td className="text-center py-3 px-3 text-sm text-gray-700">8</td>
+                    <td className="text-center py-3 px-3 text-sm text-gray-700">
+                      <div>3/6</div>
+                      <div>(50%)</div>
+                    </td>
+                    <td className="text-center py-3 px-3 text-sm text-gray-700">
+                      <div>3/6</div>
+                      <div>(50%)</div>
+                    </td>
+                    <td className="text-center py-3 px-3 text-sm text-gray-700">
+                      <div>3/6</div>
+                      <div>(50%)</div>
+                    </td>
+                    <td className="text-center py-3 px-3 text-sm text-gray-700">
+                      <div>3/6</div>
+                      <div>(50%)</div>
+                    </td>
+                    <td className="text-center py-3 px-3 text-sm text-gray-700">8</td>
+                    <td className="text-center py-3 px-3 text-sm text-gray-700">8</td>
+                    <td className="text-center py-3 px-3 text-sm text-gray-700">8</td>
+                    <td className="text-center py-3 px-3 text-sm text-gray-700">8</td>
+                    <td className="text-center py-3 px-3 text-sm text-gray-700">8</td>
+                    <td className="text-center py-3 px-3 text-sm text-gray-700">8</td>
+                    <td className="text-center py-3 px-3 text-sm text-gray-700">8</td>
+                    <td className="text-center py-3 px-3 text-sm text-gray-700">8</td>
+                  </tr>
                 </tbody>
               </table>
+            </div>
+
+            {/* Coaching Staff Section */}
+            <div className="mt-6 overflow-x-auto rounded-lg border border-gray-200">
+              <div className="grid grid-cols-2 gap-8 p-4" style={{ background: '#F8F8F8' }}>
+                <div>
+                  <div className="text-sm font-bold text-blue-900 mb-2">Coach</div>
+                  <div className="text-sm text-gray-700">Name Surname</div>
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-blue-900 mb-2">Assistant(s)</div>
+                  <div className="text-sm text-gray-700">Name Surname</div>
+                </div>
+              </div>
             </div>
           </div>
         )}
