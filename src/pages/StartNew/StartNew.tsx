@@ -76,7 +76,6 @@ const StartNew: React.FC = () => {
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-2xl font-semibold text-gray-800">Competition Setup</h1>
-          <div className="w-24 h-1 bg-green-500 mt-2"></div>
         </div>
 
         {/* Form Container */}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // Basketball Icon Component
 const BasketballIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -42,6 +43,8 @@ interface Match {
 }
 
 const CompetitionDetailPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
   const [activeGroup, setActiveGroup] = useState('A');
   const [matchCode] = useState('ABC123XYZ');
 
@@ -70,7 +73,6 @@ const CompetitionDetailPage: React.FC = () => {
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-2xl font-semibold text-gray-800">Competition Name</h1>
-          <div className="w-24 h-1 bg-green-500 mt-2"></div>
         </div>
 
         {/* Ongoing Game Card */}
@@ -184,7 +186,12 @@ const CompetitionDetailPage: React.FC = () => {
           {/* Matches List */}
           <div className="space-y-4">
             {matches.map((match) => (
-              <div key={match.id} className="rounded-lg shadow-sm p-5 border" style={{ background: '#FCFEFF', border: '1px solid #A9A9A91A' }}>
+              <div 
+                key={match.id} 
+                className="rounded-lg shadow-sm p-5 border cursor-pointer" 
+                style={{ background: '#F8F8F8', border: '1px solid #A9A9A91A' }}
+                onClick={() => navigate(`/tournaments/${id ?? '1'}/match/${match.id}`)}
+              >
                 <div className="flex justify-between items-start">
                   {/* Teams (left) */}
                   <div className="space-y-3">
@@ -214,7 +221,7 @@ const CompetitionDetailPage: React.FC = () => {
                   </div>
 
                   {/* Venue/Time (right) */}
-                  <div className="text-xs text-gray-500 text-right self-center space-y-1">
+                  <div className="text-xs text-gray-500 text-left self-center space-y-1">
                     <div>{match.venue}</div>
                     <div>{match.time}</div>
                   </div>
