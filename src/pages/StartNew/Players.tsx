@@ -1,19 +1,20 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { FiChevronUp, FiChevronDown, FiPlus } from 'react-icons/fi'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FiChevronUp, FiChevronDown, FiPlus, FiUpload } from 'react-icons/fi';
+import FileUploadBox from './FileUploadBox';
 
-const basketballPositions = [
-  'Point Guard',
-  'Shooting Guard',
-  'Small Forward',
-  'Power Forward',
-  'Center'
+const basketballPositions = ['Point Guard', 'Shooting Guard', 'Small Forward', 'Power Forward', 'Center'];
+
+const countryOptions = [
+  'United States', 'Canada', 'United Kingdom', 'Australia', 'Nigeria',
+  'France', 'Germany', 'Spain', 'Philippines', 'Brazil'
 ];
 
 interface Player {
   id: number;
   no: string;
   name: string;
+  country: string;
   height: string;
   position: string;
   dob: string;
@@ -27,6 +28,8 @@ interface TeamPlayers {
   players: Player[];
 }
 
+
+// 🏀 Players Component
 const Players: React.FC = () => {
   const navigate = useNavigate();
   const [teams, setTeams] = useState<TeamPlayers[]>([
@@ -38,27 +41,16 @@ const Players: React.FC = () => {
         id: i + 1,
         no: '',
         name: '',
+        country: '',
         height: '',
         position: '',
         dob: '',
-        captain: i === 0, // First player is captain by default
-      })),
-    },
-    {
-      id: 2,
-      teamName: 'Team Name',
-      isExpanded: false,
-      players: Array.from({ length: 5 }, (_, i) => ({
-        id: i + 1,
-        no: '',
-        name: '',
-        height: '',
-        position: '',
-        dob: '',
-        captain: false,
+        captain: i === 0,
       })),
     },
   ]);
+
+  const [activeTeamId, setActiveTeamId] = useState<number | null>(null); // For modal state
 
   const addTeam = () => {
     const newTeam: TeamPlayers = {
@@ -69,6 +61,7 @@ const Players: React.FC = () => {
         id: i + 1,
         no: '',
         name: '',
+        country: '',
         height: '',
         position: '',
         dob: '',
@@ -79,32 +72,26 @@ const Players: React.FC = () => {
   };
 
   const addPlayer = (teamId: number) => {
-    setTeams(teams.map(team => {
-      if (team.id === teamId) {
-        const newPlayer: Player = {
-          id: team.players.length + 1,
-          no: '',
-          name: '',
-          height: '',
-          position: '',
-          dob: '',
-          captain: false,
-        };
-        return { ...team, players: [...team.players, newPlayer] };
-      }
-      return team;
-    }));
-  };
-
-  const toggleTeam = (id: number) => {
-    setTeams(teams.map(team => 
-      team.id === id ? { ...team, isExpanded: !team.isExpanded } : team
+    setTeams(teams.map(team =>
+      team.id === teamId
+        ? {
+            ...team,
+            players: [
+              ...team.players,
+              { id: team.players.length + 1, no: '', name: '', country: '', height: '', position: '', dob: '', captain: false },
+            ],
+          }
+        : team
     ));
   };
 
+  const toggleTeam = (id: number) => {
+    setTeams(teams.map(team => (team.id === id ? { ...team, isExpanded: !team.isExpanded } : team)));
+  };
+
   const updatePlayer = (teamId: number, playerId: number, field: keyof Player, value: any) => {
-    setTeams(teams.map(team => 
-      team.id === teamId 
+    setTeams(teams.map(team =>
+      team.id === teamId
         ? {
             ...team,
             players: team.players.map(player =>
@@ -116,33 +103,26 @@ const Players: React.FC = () => {
   };
 
   const toggleCaptain = (teamId: number, playerId: number) => {
-    setTeams(teams.map(team => 
-      team.id === teamId 
+    setTeams(teams.map(team =>
+      team.id === teamId
         ? {
             ...team,
-            players: team.players.map(player =>
-              player.id === playerId 
-                ? { ...player, captain: !player.captain }
-                : { ...player, captain: false } // Only one captain per team
-            ),
+            players: team.players.map(player => ({
+              ...player,
+              captain: player.id === playerId,
+            })),
           }
         : team
     ));
   };
 
-  const handlePrevious = () => {
-    navigate('/teams');
+  const handleUploadList = (teamId: number) => {
+    setActiveTeamId(teamId); // open modal for this team
   };
 
-  const handleDiscard = () => {
-    console.log('Form discarded');
-    navigate('/teams');
-  };
-
-  const handleSaveNext = () => {
-    console.log('Players saved:', teams);
-    navigate('/team-overview');
-  };
+  const handlePrevious = () => navigate('/teams');
+  const handleDiscard = () => navigate('/teams');
+  const handleSaveNext = () => navigate('/team-overview');
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -168,7 +148,7 @@ const Players: React.FC = () => {
           </div>
         </div>
 
-        {/* Teams List */}
+        {/* Teams */}
         <div className="space-y-4 mb-6">
           {teams.map((team) => (
             <div key={team.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
@@ -187,10 +167,9 @@ const Players: React.FC = () => {
                 )}
               </div>
 
-              {/* Players Table - Collapsible */}
+              {/* Expanded Players */}
               {team.isExpanded && (
                 <div className="px-6 pb-6 pt-4">
-                  {/* Add Player Button - Top Right */}
                   <div className="flex justify-end mb-4">
                     <button
                       onClick={() => addPlayer(team.id)}
@@ -202,84 +181,83 @@ const Players: React.FC = () => {
                   </div>
 
                   {/* Table Header */}
-                  <div className="grid grid-cols-12 gap-3 mb-3 pb-2 border-b border-gray-200">
+                  <div className="grid grid-cols-13 gap-3 mb-3 pb-2 border-b border-gray-200">
                     <div className="col-span-1 text-sm font-medium text-gray-600 text-center">NO</div>
                     <div className="col-span-3 text-sm font-medium text-gray-600 text-center">Player Name</div>
+                    <div className="col-span-2 text-sm font-medium text-gray-600 text-center">Country</div>
                     <div className="col-span-2 text-sm font-medium text-gray-600 text-center">Height</div>
                     <div className="col-span-2 text-sm font-medium text-gray-600 text-center">Position</div>
                     <div className="col-span-2 text-sm font-medium text-gray-600 text-center">DOB</div>
-                    <div className="col-span-2 text-sm font-medium text-gray-600 text-center">Captain</div>
+                    <div className="col-span-1 text-sm font-medium text-gray-600 text-center">Captain</div>
                   </div>
 
                   {/* Player Rows */}
                   <div className="space-y-3">
                     {team.players.map((player) => (
-                      <div key={player.id} className="grid grid-cols-12 gap-3 items-center">
-                        {/* NO */}
+                      <div key={player.id} className="grid grid-cols-13 gap-3 items-center">
                         <div className="col-span-1">
                           <input
                             type="text"
                             placeholder="NO."
                             value={player.no}
                             onChange={(e) => updatePlayer(team.id, player.id, 'no', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm text-center placeholder:text-center"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-center"
                           />
                         </div>
-
-                        {/* Player Name */}
                         <div className="col-span-3">
                           <input
                             type="text"
                             placeholder="Name Surname"
                             value={player.name}
                             onChange={(e) => updatePlayer(team.id, player.id, 'name', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm text-center placeholder:text-center"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-center"
                           />
                         </div>
-
-                        {/* Height */}
+                        <div className="col-span-2">
+                          <select
+                            value={player.country}
+                            onChange={(e) => updatePlayer(team.id, player.id, 'country', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm text-center"
+                          >
+                            <option value="">Country</option>
+                            {countryOptions.map((c) => (
+                              <option key={c} value={c}>{c}</option>
+                            ))}
+                          </select>
+                        </div>
                         <div className="col-span-2">
                           <input
                             type="text"
                             placeholder="Height"
                             value={player.height}
                             onChange={(e) => updatePlayer(team.id, player.id, 'height', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm text-center placeholder:text-center"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-center"
                           />
                         </div>
-
-                        {/* Position */}
                         <div className="col-span-2">
                           <select
                             value={player.position}
                             onChange={(e) => updatePlayer(team.id, player.id, 'position', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm bg-white text-center"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm text-center"
                           >
                             <option value="">Position</option>
                             {basketballPositions.map((pos) => (
-                              <option key={pos} value={pos}>
-                                {pos}
-                              </option>
+                              <option key={pos} value={pos}>{pos}</option>
                             ))}
                           </select>
                         </div>
-
-                        {/* DOB */}
                         <div className="col-span-2">
                           <input
                             type="date"
-                            placeholder="DOB"
                             value={player.dob}
                             onChange={(e) => updatePlayer(team.id, player.id, 'dob', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm text-center"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-center"
                           />
                         </div>
-
-                        {/* Captain */}
-                        <div className="col-span-2 flex justify-center">
+                        <div className="col-span-1 flex justify-center">
                           <button
                             onClick={() => toggleCaptain(team.id, player.id)}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                            className={`px-3 py-2 rounded-lg text-sm font-medium ${
                               player.captain
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-gray-100 text-gray-600 border border-gray-300'
@@ -291,36 +269,74 @@ const Players: React.FC = () => {
                       </div>
                     ))}
                   </div>
+
+                  {/* Team Captain Dropdown */}
+                  <div className="mt-6 flex items-center gap-4">
+                    <label className="text-sm font-medium text-gray-700">Team Captain:</label>
+                    <select
+                      className="w-64 px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm"
+                      value={team.players.find(p => p.captain)?.id || ''}
+                      onChange={(e) => {
+                        const selectedId = Number(e.target.value);
+                        setTeams(teams.map(t => {
+                          if (t.id === team.id) {
+                            return {
+                              ...t,
+                              players: t.players.map(p => ({
+                                ...p,
+                                captain: p.id === selectedId,
+                              })),
+                            };
+                          }
+                          return t;
+                        }));
+                      }}
+                    >
+                      <option value="">Name Surname</option>
+                      {team.players.map((player) => (
+                        <option key={player.id} value={player.id}>
+                          {player.name || `Player ${player.id}`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Upload List Button */}
+                  <div className="mt-4">
+                    <button
+                      onClick={() => handleUploadList(team.id)}
+                      className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                    >
+                      <FiUpload className="text-lg" />
+                      Upload List
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
           ))}
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex justify-between items-center gap-3">
+        {/* Footer Buttons */}
+        <div className="flex justify-between">
           <div className="flex gap-3">
-            <button
-              onClick={handlePrevious}
-              className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-            >
+            <button onClick={handlePrevious} className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
               Previous
             </button>
-            <button
-              onClick={handleDiscard}
-              className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-            >
+            <button onClick={handleDiscard} className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
               Discard
             </button>
           </div>
-          <button
-            onClick={handleSaveNext}
-            className="px-6 py-2.5 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-          >
+          <button onClick={handleSaveNext} className="px-6 py-2.5 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
             Save & Next
           </button>
         </div>
       </div>
+
+      {/* Modal - File Upload */}
+      {activeTeamId && (
+        <FileUploadBox onClose={() => setActiveTeamId(null)} />
+      )}
     </div>
   );
 };

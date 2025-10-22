@@ -8,7 +8,6 @@ interface Official {
   shirtNumber: string;
 }
 
-// Dummy data for countries and their states
 const countriesData: Record<string, string[]> = {
   'United States': ['California', 'Texas', 'Florida', 'New York', 'Illinois', 'Pennsylvania', 'Ohio', 'Georgia'],
   'Canada': ['Ontario', 'Quebec', 'British Columbia', 'Alberta', 'Manitoba', 'Saskatchewan'],
@@ -16,6 +15,14 @@ const countriesData: Record<string, string[]> = {
   'Australia': ['New South Wales', 'Victoria', 'Queensland', 'Western Australia', 'South Australia'],
   'Nigeria': ['Lagos', 'Kano', 'Rivers', 'Kaduna', 'Oyo', 'Abuja'],
 };
+
+const divisionOptions = [
+  'Premier Division',
+  'Division 1',
+  'Division 2',
+  'Division 3',
+  'Junior Division',
+];
 
 const StartNew: React.FC = () => {
   const navigate = useNavigate();
@@ -31,8 +38,7 @@ const StartNew: React.FC = () => {
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
   const [flyer, setFlyer] = useState<File | null>(null);
-  
-  // Get available states based on selected country
+
   const availableStates = country ? countriesData[country] || [] : [];
 
   const [officials, setOfficials] = useState<Official[]>([
@@ -43,14 +49,14 @@ const StartNew: React.FC = () => {
   ]);
 
   const handleOfficialChange = (id: number, field: keyof Official, value: string) => {
-    setOfficials(officials.map(official => 
+    setOfficials(officials.map((official) =>
       official.id === id ? { ...official, [field]: value } : official
     ));
   };
 
   const handleCountryChange = (newCountry: string) => {
     setCountry(newCountry);
-    setState(''); // Reset state when country changes
+    setState('');
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +72,6 @@ const StartNew: React.FC = () => {
 
   const handleSaveNext = () => {
     console.log('Form saved and moving to next step');
-    // Save competition data (you can add API call here)
     navigate('/teams');
   };
 
@@ -81,178 +86,191 @@ const StartNew: React.FC = () => {
         {/* Form Container */}
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            {/* Left Column - Form Fields */}
+            {/* Left Column */}
             <div className="lg:col-span-3 space-y-6">
-            {/* Competition Name */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Competition</label>
-              <input
-                type="text"
-                placeholder="Name Here"
-                value={competitionName}
-                onChange={(e) => setCompetitionName(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-              />
-            </div>
-
-            {/* Competition Short Name */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Competition Short Name</label>
-              <input
-                type="text"
-                placeholder="Short Name"
-                value={competitionShortName}
-                onChange={(e) => setCompetitionShortName(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-              />
-            </div>
-
-            {/* Division (Optional) */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Division <span className="text-gray-400 font-normal">(Optional)</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Division Name"
-                value={division}
-                onChange={(e) => setDivision(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-              />
-            </div>
-
-            {/* Number of Games and Quarters */}
-            <div className="grid grid-cols-2 gap-4">
+              
+              {/* Competition Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Number of Games</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Competition</label>
                 <input
                   type="text"
-                  value={numberOfGames}
-                  onChange={(e) => setNumberOfGames(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                  placeholder="Name Here"
+                  value={competitionName}
+                  onChange={(e) => setCompetitionName(e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                 />
               </div>
+
+              {/* Competition Short Name + Division (side by side) */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Competition Short Name</label>
+                  <input
+                    type="text"
+                    placeholder="Short Name"
+                    value={competitionShortName}
+                    onChange={(e) => setCompetitionShortName(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Division <span className="text-gray-400 font-normal">(Optional)</span>
+                  </label>
+                  <select
+                    value={division}
+                    onChange={(e) => setDivision(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  >
+                    <option value="">Select Division</option>
+                    {divisionOptions.map((div) => (
+                      <option key={div} value={div}>{div}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Number of Games & Quarters */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Number of Games</label>
+                  <select
+                    value={numberOfGames}
+                    onChange={(e) => setNumberOfGames(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  >
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="28">28</option>
+                    <option value="30">30</option>
+                    <option value="40">40</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Number of Quarters</label>
+                  <select
+                    value={numberOfQuarters}
+                    onChange={(e) => setNumberOfQuarters(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  >
+                    <option value="2">2</option>
+                    <option value="4">4</option>
+                    <option value="6">6</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Quarter Duration & Overtime Duration */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Quarter Duration</label>
+                  <input
+                    type="text"
+                    value={quarterDuration}
+                    onChange={(e) => setQuarterDuration(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Overtime Duration</label>
+                  <input
+                    type="text"
+                    value={overtimeDuration}
+                    onChange={(e) => setOvertimeDuration(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  />
+                </div>
+              </div>
+
+              {/* Date */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Number of Quarters</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+                <input
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                />
+              </div>
+
+              {/* Venue */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Venue</label>
                 <input
                   type="text"
-                  value={numberOfQuarters}
-                  onChange={(e) => setNumberOfQuarters(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                  placeholder="Court"
+                  value={court}
+                  onChange={(e) => setCourt(e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 mb-3"
                 />
+                <div className="grid grid-cols-2 gap-3">
+                  <select
+                    value={country}
+                    onChange={(e) => handleCountryChange(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  >
+                    <option value="">Select Country</option>
+                    {Object.keys(countriesData).map((countryName) => (
+                      <option key={countryName} value={countryName}>
+                        {countryName}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                    disabled={!country}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white disabled:bg-gray-100 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  >
+                    <option value="">Select State</option>
+                    {availableStates.map((stateName) => (
+                      <option key={stateName} value={stateName}>
+                        {stateName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
-            </div>
 
-            {/* Quarter Duration and Overtime Duration */}
-            <div className="grid grid-cols-2 gap-4">
+              {/* Officials */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Quarter Duration</label>
-                <input
-                  type="text"
-                  value={quarterDuration}
-                  onChange={(e) => setQuarterDuration(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Overtime Duration</label>
-                <input
-                  type="text"
-                  value={overtimeDuration}
-                  onChange={(e) => setOvertimeDuration(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                />
-              </div>
-            </div>
-
-            {/* Date */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-              />
-            </div>
-
-            {/* Venue */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Venue</label>
-              <input
-                type="text"
-                placeholder="Court"
-                value={court}
-                onChange={(e) => setCourt(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 mb-3"
-              />
-              <div className="grid grid-cols-2 gap-3">
-                <select
-                  value={country}
-                  onChange={(e) => handleCountryChange(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
-                >
-                  <option value="">Select Country</option>
-                  {Object.keys(countriesData).map((countryName) => (
-                    <option key={countryName} value={countryName}>
-                      {countryName}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
-                  disabled={!country}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
-                >
-                  <option value="">Select State</option>
-                  {availableStates.map((stateName) => (
-                    <option key={stateName} value={stateName}>
-                      {stateName}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Officials */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Officials</label>
-              <div className="space-y-3">
-                {officials.map((official, index) => (
-                  <div key={official.id} className="grid grid-cols-12 gap-3 items-center">
-                    <div className="col-span-1 text-sm text-gray-600">{index + 1}.</div>
-                    <input
-                      type="text"
-                      placeholder="Name Surname"
-                      value={official.name}
-                      onChange={(e) => handleOfficialChange(official.id, 'name', e.target.value)}
-                      className="col-span-6 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                    />
-                    <div className="col-span-3">
-                      <select
-                        value={official.role}
-                        onChange={(e) => handleOfficialChange(official.id, 'role', e.target.value)}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
-                      >
-                        <option value="Crew Chief">Crew Chief</option>
-                        <option value="Umpire">Umpire</option>
-                        <option value="Commissioner">Commissioner</option>
-                        <option value="Referee">Referee</option>
-                      </select>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Officials</label>
+                <div className="space-y-3">
+                  {officials.map((official, index) => (
+                    <div key={official.id} className="grid grid-cols-12 gap-3 items-center">
+                      <div className="col-span-1 text-sm text-gray-600">{index + 1}.</div>
+                      <input
+                        type="text"
+                        placeholder="Name Surname"
+                        value={official.name}
+                        onChange={(e) => handleOfficialChange(official.id, 'name', e.target.value)}
+                        className="col-span-6 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                      />
+                      <div className="col-span-3">
+                        <select
+                          value={official.role}
+                          onChange={(e) => handleOfficialChange(official.id, 'role', e.target.value)}
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                        >
+                          <option value="Crew Chief">Crew Chief</option>
+                          <option value="Umpire">Umpire</option>
+                          <option value="Commissioner">Commissioner</option>
+                          <option value="Referee">Referee</option>
+                        </select>
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Shirt No."
+                        value={official.shirtNumber}
+                        onChange={(e) => handleOfficialChange(official.id, 'shirtNumber', e.target.value)}
+                        className="col-span-2 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                      />
                     </div>
-                    <input
-                      type="text"
-                      placeholder="Shirt No."
-                      value={official.shirtNumber}
-                      onChange={(e) => handleOfficialChange(official.id, 'shirtNumber', e.target.value)}
-                      className="col-span-2 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                    />
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-
             </div>
 
             {/* Right Column - Upload Flyer */}
@@ -263,7 +281,12 @@ const StartNew: React.FC = () => {
               >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                   <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center mb-3">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg
+                      className="w-8 h-8 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                     </svg>
                   </div>
