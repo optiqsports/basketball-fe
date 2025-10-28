@@ -135,17 +135,15 @@ const StartNew: React.FC = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Number of Games</label>
-                  <select
+                  <input
+                    type="number"
+                    min={1}
+                    step={1}
+                    placeholder="Enter number of games"
                     value={numberOfGames}
                     onChange={(e) => setNumberOfGames(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                  >
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="28">28</option>
-                    <option value="30">30</option>
-                    <option value="40">40</option>
-                  </select>
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  />
                 </div>
 
                 <div>

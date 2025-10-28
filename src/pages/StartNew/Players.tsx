@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiChevronUp, FiChevronDown, FiPlus, FiUpload } from 'react-icons/fi';
+import { FiChevronUp, FiChevronDown, FiPlus, FiUpload, FiUser } from 'react-icons/fi';
 import FileUploadBox from './FileUploadBox';
+import PlayerImageUploadBox from './PlayerImageUploadBox';
 
 const basketballPositions = ['Point Guard', 'Shooting Guard', 'Small Forward', 'Power Forward', 'Center'];
 
@@ -19,6 +20,7 @@ interface Player {
   position: string;
   dob: string;
   captain: boolean;
+  imageUrl?: string;
 }
 
 interface TeamPlayers {
@@ -46,11 +48,13 @@ const Players: React.FC = () => {
         position: '',
         dob: '',
         captain: i === 0,
+        imageUrl: '',
       })),
     },
   ]);
 
   const [activeTeamId, setActiveTeamId] = useState<number | null>(null); // For modal state
+  const [activeImageTarget, setActiveImageTarget] = useState<{ teamId: number; playerId: number } | null>(null);
 
   const addTeam = () => {
     const newTeam: TeamPlayers = {
@@ -170,15 +174,6 @@ const Players: React.FC = () => {
               {/* Expanded Players */}
               {team.isExpanded && (
                 <div className="px-6 pb-6 pt-4">
-                  <div className="flex justify-end mb-4">
-                    <button
-                      onClick={() => addPlayer(team.id)}
-                      className="flex items-center gap-2 px-4 py-2 text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors font-medium text-sm"
-                    >
-                      <FiPlus className="text-lg" />
-                      Add Player
-                    </button>
-                  </div>
 
                   {/* Table Header */}
                   <div className="grid grid-cols-13 gap-3 mb-3 pb-2 border-b border-gray-200">
@@ -188,7 +183,7 @@ const Players: React.FC = () => {
                     <div className="col-span-2 text-sm font-medium text-gray-600 text-center">Height</div>
                     <div className="col-span-2 text-sm font-medium text-gray-600 text-center">Position</div>
                     <div className="col-span-2 text-sm font-medium text-gray-600 text-center">DOB</div>
-                    <div className="col-span-1 text-sm font-medium text-gray-600 text-center">Captain</div>
+                    <div className="col-span-1 text-sm font-medium text-gray-600 text-center">Players Img</div>
                   </div>
 
                   {/* Player Rows */}
@@ -256,14 +251,15 @@ const Players: React.FC = () => {
                         </div>
                         <div className="col-span-1 flex justify-center">
                           <button
-                            onClick={() => toggleCaptain(team.id, player.id)}
-                            className={`px-3 py-2 rounded-lg text-sm font-medium ${
-                              player.captain
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-gray-100 text-gray-600 border border-gray-300'
-                            }`}
+                            onClick={() => setActiveImageTarget({ teamId: team.id, playerId: player.id })}
+                            className="w-10 h-10 rounded-full overflow-hidden border border-gray-300 bg-gray-100 flex items-center justify-center"
+                            title="Upload player image"
                           >
-                            C
+                            {player.imageUrl ? (
+                              <img src={player.imageUrl} alt={player.name || `Player ${player.id}`} className="w-full h-full object-cover cursor-pointer" />
+                            ) : (
+                              <FiUser className="text-gray-400 text-lg cursor-pointer" />
+                            )}
                           </button>
                         </div>
                       </div>
@@ -301,14 +297,21 @@ const Players: React.FC = () => {
                     </select>
                   </div>
 
-                  {/* Upload List Button */}
-                  <div className="mt-4">
+                  {/* Bottom Action Row: Upload List + Add Player */}
+                  <div className="mt-4 flex justify-start gap-3">
                     <button
                       onClick={() => handleUploadList(team.id)}
                       className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
                     >
                       <FiUpload className="text-lg" />
                       Upload List
+                    </button>
+                    <button
+                      onClick={() => addPlayer(team.id)}
+                      className="flex items-center gap-2 px-4 py-2 text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors font-medium text-sm"
+                    >
+                      <FiPlus className="text-lg" />
+                      Add Player
                     </button>
                   </div>
                 </div>
@@ -336,6 +339,25 @@ const Players: React.FC = () => {
       {/* Modal - File Upload */}
       {activeTeamId && (
         <FileUploadBox onClose={() => setActiveTeamId(null)} />
+      )}
+      {activeImageTarget && (
+        <PlayerImageUploadBox
+          onClose={() => setActiveImageTarget(null)}
+          onUploaded={(url) => {
+            const { teamId, playerId } = activeImageTarget;
+            setTeams(teams.map(t => (
+              t.id === teamId
+                ? {
+                    ...t,
+                    players: t.players.map(p => (
+                      p.id === playerId ? { ...p, imageUrl: url } : p
+                    )),
+                  }
+                : t
+            )));
+            setActiveImageTarget(null);
+          }}
+        />
       )}
     </div>
   );
