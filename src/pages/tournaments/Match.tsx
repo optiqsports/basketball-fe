@@ -38,6 +38,7 @@ const GameScorePage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<LeaderCategory>('points');
   const [showBoxScore, setShowBoxScore] = useState(false);
   const [activeTeam, setActiveTeam] = useState<'A' | 'B'>('A');
+  const [activeTab, setActiveTab] = useState<'stats' | 'boxscore' | 'shotchart'>('stats');
 
   const teamAScore: QuarterScore = { q1: 17, q2: 0, q3: 0, q4: 0 };
   const teamBScore: QuarterScore = { q1: 17, q2: 0, q3: 0, q4: 0 };
@@ -166,6 +167,40 @@ const GameScorePage: React.FC = () => {
           </table>
         </div>
         )}
+
+        {/* Main Tabs */}
+        <div className="flex gap-3 mb-6 justify-center">
+          <button
+            onClick={() => setActiveTab('stats')}
+            className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
+              activeTab === 'stats'
+                ? 'bg-[#21409A] text-white shadow-md'
+                : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-50'
+            }`}
+          >
+            Game Stats
+          </button>
+          <button
+            onClick={() => setActiveTab('boxscore')}
+            className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
+              activeTab === 'boxscore'
+                ? 'bg-[#21409A] text-white shadow-md'
+                : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-50'
+            }`}
+          >
+            Box Score
+          </button>
+          <button
+            onClick={() => setActiveTab('shotchart')}
+            className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
+              activeTab === 'shotchart'
+                ? 'bg-[#21409A] text-white shadow-md'
+                : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-50'
+            }`}
+          >
+            Shot Chart
+          </button>
+        </div>
 
         {/* Game Leaders Section - Hidden when Box Score is shown */}
         {!showBoxScore && (

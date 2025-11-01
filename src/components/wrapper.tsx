@@ -12,6 +12,8 @@ import TeamOverview from '../pages/StartNew/TeamOverview'
 import Complete from '../pages/StartNew/Complete'
 import TournamentsListing from '../pages/tournaments/TournamentsListing'
 import Tournaments from '../pages/tournaments/Tournaments'
+import Fixtures from '../pages/tournaments/Fixtures'
+import Schedules from '../pages/tournaments/Schedules'
 
 const Wrapper: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -71,6 +73,8 @@ const Wrapper: React.FC = () => {
             <Route path="/complete" element={<Complete />} />
             <Route path="/tournaments" element={<TournamentsListing />} />
             <Route path="/tournaments/:id" element={<Tournaments />} />
+            <Route path="/tournaments/:id/fixtures" element={<Fixtures />} />
+            <Route path="/tournaments/:id/schedules" element={<Schedules />} />
             <Route path="/tournaments/:id/match/:matchId" element={<MatchPage />} />
             <Route path="/tournaments/:id/match/:matchId/player/:playerId" element={<PlayerDetails />} />
             <Route path="/results" element={<div className="p-8"><h1 className="text-2xl font-bold">Results</h1></div>} />

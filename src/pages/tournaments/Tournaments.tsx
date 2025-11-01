@@ -137,7 +137,9 @@ const CompetitionDetailPage: React.FC = () => {
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Standings Table */}
-          <div className="rounded-lg shadow-sm p-6 border" style={{ background: '#FCFEFF', border: '1px solid #A9A9A91A' }}>
+          <div>
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">Teams</h2>
+            <div className="rounded-lg shadow-sm p-6 border" style={{ background: '#FCFEFF', border: '1px solid #A9A9A91A' }}>
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-gray-800">Group {activeGroup}</h2>
               <p className="text-sm text-gray-500">0/10 Games Played</p>
@@ -181,14 +183,25 @@ const CompetitionDetailPage: React.FC = () => {
                 </tbody>
               </table>
             </div>
+            </div>
           </div>
 
-          {/* Matches List */}
-          <div className="space-y-4">
+          {/* Fixtures List */}
+          <div>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold text-gray-800">Schedules</h2>
+              <button 
+                onClick={() => navigate(`/tournaments/${id ?? '1'}/schedules`)}
+                className="text-sm text-[#21409A] hover:underline font-medium"
+              >
+                View All
+              </button>
+            </div>
+            <div className="space-y-4">
             {matches.map((match) => (
               <div 
                 key={match.id} 
-                className="rounded-lg shadow-sm p-5 border cursor-pointer" 
+                className="rounded-lg shadow-sm p-5 border cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:ring-1 hover:ring-gray-300" 
                 style={{ background: '#F8F8F8', border: '1px solid #A9A9A91A' }}
                 onClick={() => navigate(`/tournaments/${id ?? '1'}/match/${match.id}`)}
               >
@@ -228,6 +241,100 @@ const CompetitionDetailPage: React.FC = () => {
                 </div>
               </div>
             ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Tournament Leaders Section */}
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Tournament Leaders</h2>
+          
+          {/* Stats Tabs */}
+          <div className="flex gap-2 mb-6">
+            <button className="px-6 py-2.5 rounded-lg font-medium bg-[#21409A] text-white shadow-md">
+              Points
+            </button>
+            <button className="px-6 py-2.5 rounded-lg font-medium bg-white text-gray-600 hover:bg-gray-100">
+              Rebounds
+            </button>
+            <button className="px-6 py-2.5 rounded-lg font-medium bg-white text-gray-600 hover:bg-gray-100">
+              Assists
+            </button>
+            <button className="px-6 py-2.5 rounded-lg font-medium bg-white text-gray-600 hover:bg-gray-100">
+              Block
+            </button>
+            <button className="px-6 py-2.5 rounded-lg font-medium bg-white text-gray-600 hover:bg-gray-100">
+              Steals
+            </button>
+          </div>
+
+          {/* Player Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Player 1 - Yellow */}
+            <div className="rounded-lg overflow-hidden shadow-md" style={{ background: 'linear-gradient(180deg, #F5C563 0%, #E8B34F 100%)' }}>
+              <div className="p-4">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <p className="text-white text-sm font-medium">Name</p>
+                    <p className="text-white text-sm font-medium">Surname</p>
+                  </div>
+                  <div className="bg-white rounded px-2 py-1">
+                    <span className="text-xs font-bold text-gray-800">11PPG</span>
+                  </div>
+                </div>
+                <div className="flex justify-center">
+                  <img 
+                    src="/ball1.png" 
+                    alt="Player" 
+                    className="w-32 h-32 object-cover rounded-lg"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Player 2 - Blue */}
+            <div className="rounded-lg overflow-hidden shadow-md" style={{ background: 'linear-gradient(180deg, #7AB8D9 0%, #5DA3C7 100%)' }}>
+              <div className="p-4">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <p className="text-white text-sm font-medium">Name</p>
+                    <p className="text-white text-sm font-medium">Surname</p>
+                  </div>
+                  <div className="bg-white rounded px-2 py-1">
+                    <span className="text-xs font-bold text-gray-800">10PPG</span>
+                  </div>
+                </div>
+                <div className="flex justify-center">
+                  <img 
+                    src="/ball2.png" 
+                    alt="Player" 
+                    className="w-32 h-32 object-cover rounded-lg"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Player 3 - Green */}
+            <div className="rounded-lg overflow-hidden shadow-md" style={{ background: 'linear-gradient(180deg, #7FD99A 0%, #5FC780 100%)' }}>
+              <div className="p-4">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <p className="text-white text-sm font-medium">Name</p>
+                    <p className="text-white text-sm font-medium">Surname</p>
+                  </div>
+                  <div className="bg-white rounded px-2 py-1">
+                    <span className="text-xs font-bold text-gray-800">10PPG</span>
+                  </div>
+                </div>
+                <div className="flex justify-center">
+                  <img 
+                    src="/ball1.png" 
+                    alt="Player" 
+                    className="w-32 h-32 object-cover rounded-lg"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
