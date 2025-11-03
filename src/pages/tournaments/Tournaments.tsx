@@ -286,68 +286,50 @@ const CompetitionDetailPage: React.FC = () => {
           {/* Player Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Player 1 - Yellow */}
-            <div className="rounded-lg overflow-hidden shadow-md" style={{ background: 'linear-gradient(180deg, #F5C563 0%, #E8B34F 100%)' }}>
+            <div className="rounded-2xl overflow-hidden bg-[#FFCA69]" style={{ width: '335px', height: '374px' }}>
               <div className="p-4">
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <p className="text-white text-sm font-medium">Name</p>
-                    <p className="text-white text-sm font-medium">Surname</p>
-                  </div>
-                  <div className="bg-white rounded px-2 py-1">
-                    <span className="text-xs font-bold text-gray-800">11PPG</span>
-                  </div>
-                </div>
-                <div className="flex justify-center">
-                  <img 
-                    src="/ball1.png" 
-                    alt="Player" 
-                    className="w-32 h-32 object-cover rounded-lg"
-                  />
-                </div>
+                <div className="text-white font-medium mb-1">Name</div>
+                <div className="text-white font-bold text-lg mb-1">Surname</div>
+                <div className="bg-white text-gray-900 font-bold text-sm px-3 py-1 rounded-md inline-block">11 <span className='font-light'>PPG</span></div>
+              </div>
+              <div className="relative" style={{ height: '400px' }}>
+                <img
+                  src="/player1.png"
+                  alt="Player"
+                  className="w-[21rem] ml-0 mx-auto absolute mt-[-2rem]"
+                />
               </div>
             </div>
-
+            
             {/* Player 2 - Blue */}
-            <div className="rounded-lg overflow-hidden shadow-md" style={{ background: 'linear-gradient(180deg, #7AB8D9 0%, #5DA3C7 100%)' }}>
+            <div className="rounded-2xl overflow-hidden bg-[#80B7D5]" style={{ width: '335px', height: '374px' }}>
               <div className="p-4">
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <p className="text-white text-sm font-medium">Name</p>
-                    <p className="text-white text-sm font-medium">Surname</p>
-                  </div>
-                  <div className="bg-white rounded px-2 py-1">
-                    <span className="text-xs font-bold text-gray-800">10PPG</span>
-                  </div>
-                </div>
-                <div className="flex justify-center">
-                  <img 
-                    src="/ball2.png" 
-                    alt="Player" 
-                    className="w-32 h-32 object-cover rounded-lg"
-                  />
-                </div>
+                <div className="text-white font-medium mb-1">Name</div>
+                <div className="text-white font-bold text-lg mb-1">Surname</div>
+                <div className="bg-white text-gray-900 font-bold text-sm px-3 py-1 rounded-md inline-block">23 <span className='font-light'>PPG</span></div>
+              </div>
+              <div className="relative" style={{ height: '400px' }}>
+                <img
+                  src="/player2.png"
+                  alt="Player"
+                  className="w-[21rem] ml-0 mx-auto absolute mt-[-2rem]"
+                />
               </div>
             </div>
-
+            
             {/* Player 3 - Green */}
-            <div className="rounded-lg overflow-hidden shadow-md" style={{ background: 'linear-gradient(180deg, #7FD99A 0%, #5FC780 100%)' }}>
+            <div className="rounded-2xl overflow-hidden bg-[#7FD99A]" style={{ width: '335px', height: '374px' }}>
               <div className="p-4">
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <p className="text-white text-sm font-medium">Name</p>
-                    <p className="text-white text-sm font-medium">Surname</p>
-                  </div>
-                  <div className="bg-white rounded px-2 py-1">
-                    <span className="text-xs font-bold text-gray-800">10PPG</span>
-                  </div>
-                </div>
-                <div className="flex justify-center">
-                  <img 
-                    src="/ball1.png" 
-                    alt="Player" 
-                    className="w-32 h-32 object-cover rounded-lg"
-                  />
-                </div>
+                <div className="text-white font-medium mb-1">Name</div>
+                <div className="text-white font-bold text-lg mb-1">Surname</div>
+                <div className="bg-white text-gray-900 font-bold text-sm px-3 py-1 rounded-md inline-block">05 <span className='font-light'>PPG</span></div>
+              </div>
+              <div className="relative" style={{ height: '400px' }}>
+                <img
+                  src="/player3.png"
+                  alt="Player"
+                  className="w-[21rem] ml-0 mx-auto absolute mt-[-2rem]"
+                />
               </div>
             </div>
           </div>

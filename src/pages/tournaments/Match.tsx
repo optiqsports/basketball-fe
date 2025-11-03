@@ -238,12 +238,12 @@ const GameScorePage: React.FC = () => {
               {/* Legend */}
               <div className="flex justify-center gap-6 mt-4">
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-gray-300 text-[#21409A] focus:ring-[#21409A]" />
+                  <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500" />
                   <span className="w-3 h-3 bg-orange-400 rounded-full"></span>
                   <span className="text-sm text-gray-700">Made</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-gray-300 text-[#21409A] focus:ring-[#21409A]" />
+                  <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500" />
                   <span className="text-gray-600 text-lg">✕</span>
                   <span className="text-sm text-gray-700">Missed</span>
                 </label>
@@ -251,46 +251,114 @@ const GameScorePage: React.FC = () => {
             </div>
 
             {/* Player Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              {/* Player 1 - Yellow/Orange */}
-              <div className="bg-gradient-to-b from-yellow-300 to-yellow-200 rounded-lg p-6 relative overflow-hidden">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-sm font-medium text-gray-700">Name</p>
-                    <p className="text-sm font-medium text-gray-700">Surname</p>
+            <div className="flex gap-[23px] mb-6 justify-center" style={{ marginTop: '42px' }}>
+              {/* Player 1 - Yellow */}
+              <div
+                className="rounded-2xl overflow-hidden bg-[#FFCA69] relative"
+                style={{ width: '335px', height: '374px' }}
+              >
+                <div className="absolute left-4 top-4 z-10">
+                  <div className="text-white font-medium mb-1">Name</div>
+                  <div className="text-white font-bold text-lg mb-1">Surname</div>
+                  <div className="bg-white text-gray-900 font-bold text-sm w-8 h-8 flex items-center justify-center rounded-md mb-4">
+                    11
                   </div>
-                  <div className="bg-white rounded px-3 py-1 text-lg font-bold text-gray-800">11</div>
+                  <div className="mb-2">
+                    <div className="relative w-16 h-16">
+                      <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 100 100">
+                        {/* Background circle */}
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="40"
+                          stroke="#E5E7EB"
+                          strokeWidth="8"
+                          fill="none"
+                        />
+                        {/* Progress circle */}
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="40"
+                          stroke="#80B7D5"
+                          strokeWidth="8"
+                          fill="none"
+                          strokeDasharray="251.2"
+                          strokeDashoffset="125.6"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="text-[10px] font-bold text-gray-800">FG%</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-white font-bold text-sm mt-1">50%</div>
+                    <div className="text-white text-xs">(10/20)</div>
+                  </div>
                 </div>
-                <div className="flex items-end justify-between">
-                  <div className="bg-white rounded-full px-4 py-2">
-                    <div className="text-xs text-gray-500">FG%</div>
-                    <div className="text-sm font-bold text-gray-800">30%</div>
-                    <div className="text-xs text-gray-500">(8/26)</div>
-                  </div>
-                  <div className="w-32 h-32 bg-gray-300 rounded-lg">
-                    <img src="/player1.png" alt="Player" className="w-full h-full object-cover" onError={(e) => e.currentTarget.style.display = 'none'} />
-                  </div>
+                <div className="relative" style={{ height: '374px' }}>
+                  <img
+                    src="/player1.png"
+                    alt="Player"
+                    className="w-[21rem] ml-0 mx-auto absolute mt-[4.7rem]"
+                  />
                 </div>
               </div>
 
               {/* Player 2 - Blue */}
-              <div className="bg-gradient-to-b from-blue-300 to-blue-200 rounded-lg p-6 relative overflow-hidden">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-sm font-medium text-gray-700">Name</p>
-                    <p className="text-sm font-medium text-gray-700">Surname</p>
+              <div
+                className="rounded-2xl overflow-hidden bg-[#80B7D5] relative"
+                style={{ width: '335px', height: '374px' }}
+              >
+                <div className="absolute left-4 top-4 z-10">
+                  <div className="text-white font-medium mb-1">Name</div>
+                  <div className="text-white font-bold text-lg mb-1">Surname</div>
+                  <div className="bg-white text-gray-900 font-bold text-sm w-8 h-8 flex items-center justify-center rounded-md mb-4">
+                    23
                   </div>
-                  <div className="bg-white rounded px-3 py-1 text-lg font-bold text-gray-800">23</div>
+                  <div className="mb-2">
+                    <div className="relative w-16 h-16">
+                      <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 100 100">
+                        {/* Background circle */}
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="40"
+                          stroke="#E5E7EB"
+                          strokeWidth="8"
+                          fill="none"
+                        />
+                        {/* Progress circle */}
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="40"
+                          stroke="#FFCA69"
+                          strokeWidth="8"
+                          fill="none"
+                          strokeDasharray="251.2"
+                          strokeDashoffset="125.6"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="text-[10px] font-bold text-gray-800">FG%</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-white font-bold text-sm mt-1">50%</div>
+                    <div className="text-white text-xs">(10/20)</div>
+                  </div>
                 </div>
-                <div className="flex items-end justify-between">
-                  <div className="bg-white rounded-full px-4 py-2">
-                    <div className="text-xs text-gray-500">FG%</div>
-                    <div className="text-sm font-bold text-gray-800">50%</div>
-                    <div className="text-xs text-gray-500">(10/20)</div>
-                  </div>
-                  <div className="w-32 h-32 bg-gray-300 rounded-lg">
-                    <img src="/player2.png" alt="Player" className="w-full h-full object-cover" onError={(e) => e.currentTarget.style.display = 'none'} />
-                  </div>
+                <div className="relative" style={{ height: '374px' }}>
+                  <img
+                    src="/player2.png"
+                    alt="Player"
+                    className="w-[21rem] ml-0 mx-auto absolute mt-[4.7rem]"
+                  />
                 </div>
               </div>
             </div>
@@ -305,7 +373,7 @@ const GameScorePage: React.FC = () => {
                 </label>
                 {[1, 2, 3, 4, 5].map((i) => (
                   <label key={i} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50">
-                    <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-yellow-500 focus:ring-yellow-500" />
+                    <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-gray-300 text-yellow-500 focus:ring-yellow-500" />
                     <span className="text-sm text-gray-700">Name Surname</span>
                   </label>
                 ))}
@@ -319,7 +387,7 @@ const GameScorePage: React.FC = () => {
                 </label>
                 {[1, 2, 3, 4, 5].map((i) => (
                   <label key={i} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50">
-                    <input type="checkbox" defaultChecked={i === 3} className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500" />
+                    <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500" />
                     <span className="text-sm text-gray-700">Name Surname</span>
                   </label>
                 ))}
