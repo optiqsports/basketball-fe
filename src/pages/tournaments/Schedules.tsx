@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
+// Copy Icon Component
+const CopyIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
 interface Match {
   id: number;
   teamA: string;
@@ -16,6 +24,7 @@ interface Match {
   matchVenue: string;
   matchDateTime: string;
   isEditing: boolean;
+  hasStarted: boolean;
 }
 
 const Schedules: React.FC = () => {
@@ -23,6 +32,12 @@ const Schedules: React.FC = () => {
   const navigate = useNavigate();
   const [activeGroup, setActiveGroup] = useState('A');
   const [activeFilter, setActiveFilter] = useState('all');
+  const [matchCode] = useState('ABC123XYZ');
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(matchCode);
+    alert('Match code copied!');
+  };
   
   const [matches, setMatches] = useState<Match[]>([
     { 
@@ -39,7 +54,8 @@ const Schedules: React.FC = () => {
       venue: 'Court',
       matchVenue: 'Match Venue',
       matchDateTime: '12:40PM, 11 November 2025',
-      isEditing: true
+      isEditing: true,
+      hasStarted: false
     },
     { 
       id: 2, 
@@ -55,7 +71,8 @@ const Schedules: React.FC = () => {
       venue: 'Court',
       matchVenue: 'Match Venue',
       matchDateTime: '12:40PM, 11 November 2025',
-      isEditing: false
+      isEditing: false,
+      hasStarted: false
     },
     { 
       id: 3, 
@@ -71,7 +88,8 @@ const Schedules: React.FC = () => {
       venue: 'Court',
       matchVenue: 'Match Venue',
       matchDateTime: '12:40PM, 11 November 2025',
-      isEditing: false
+      isEditing: false,
+      hasStarted: true
     },
   ]);
 
@@ -89,16 +107,25 @@ const Schedules: React.FC = () => {
           <div className="flex justify-between items-center mb-4">
             <button 
               onClick={() => navigate(-1)}
-              className="text-gray-600 hover:text-gray-800 flex items-center gap-2"
+              className="text-gray-600 hover:text-gray-800 flex items-center gap-2 cursor-pointer"
             >
               <span>←</span> Back to Tournament
             </button>
-            <button 
-              onClick={() => navigate(`/tournaments/${id ?? '1'}/fixtures`)}
-              className="text-sm text-[#21409A] hover:underline font-medium"
-            >
-              Edit Fixture
-            </button>
+            <div className="flex items-center gap-4">
+              <button 
+                onClick={handleCopyCode}
+                className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors cursor-pointer"
+              >
+                <span>Copy Match Code</span>
+                <CopyIcon className="w-4 h-4" />
+              </button>
+              <button 
+                onClick={() => navigate(`/tournaments/${id ?? '1'}/fixtures`)}
+                className="text-sm text-[#21409A] hover:underline font-medium cursor-pointer"
+              >
+                Edit Fixture
+              </button>
+            </div>
           </div>
           <h1 className="text-3xl font-semibold text-gray-800">Schedule</h1>
         </div>
@@ -150,7 +177,14 @@ const Schedules: React.FC = () => {
         {/* Matches List */}
         <div className="space-y-4">
           {matches.map((match) => (
-            <div key={match.id} className="bg-[#F8F8F8] rounded-lg shadow-sm p-6 border border-gray-200">
+            <div 
+              key={match.id} 
+              className="bg-[#F8F8F8] rounded-lg shadow-sm p-6 border border-gray-200 cursor-pointer hover:shadow-md transition-shadow"
+              onClick={() => navigate(match.hasStarted 
+                ? `/tournaments/${id ?? '1'}/match/${match.id}` 
+                : `/tournaments/${id ?? '1'}/match/${match.id}/pending`
+              )}
+            >
               <div className="flex justify-between items-start">
                 {/* Left Side - Teams and Form */}
                 <div className="flex-1">
@@ -183,7 +217,7 @@ const Schedules: React.FC = () => {
 
                   {/* Edit Form - Only show when editing */}
                   {match.isEditing && (
-                    <>
+                    <div onClick={(e) => e.stopPropagation()}>
                       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
                         {/* Date */}
                         <div>
@@ -244,16 +278,22 @@ const Schedules: React.FC = () => {
                       {/* Action Buttons */}
                       <div className="flex gap-3">
                         <button 
-                          onClick={() => toggleEdit(match.id)}
-                          className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 font-medium"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleEdit(match.id);
+                          }}
+                          className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 font-medium cursor-pointer"
                         >
                           Discard
                         </button>
-                        <button className="px-6 py-2.5 bg-[#21409A] text-white rounded-lg font-medium hover:bg-blue-800 transition-colors">
+                        <button 
+                          onClick={(e) => e.stopPropagation()}
+                          className="px-6 py-2.5 bg-[#21409A] text-white rounded-lg font-medium hover:bg-blue-800 transition-colors cursor-pointer"
+                        >
                           Save
                         </button>
                       </div>
-                    </>
+                    </div>
                   )}
                 </div>
 
@@ -265,8 +305,11 @@ const Schedules: React.FC = () => {
                   </div>
                   {!match.isEditing && (
                     <button 
-                      onClick={() => toggleEdit(match.id)}
-                      className="px-4 py-1.5 border border-[#21409A] text-[#21409A] rounded-lg text-sm font-medium hover:bg-blue-50"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleEdit(match.id);
+                      }}
+                      className="px-4 py-1.5 border border-[#21409A] text-[#21409A] rounded-lg text-sm font-medium hover:bg-blue-50 cursor-pointer"
                     >
                       Edit
                     </button>

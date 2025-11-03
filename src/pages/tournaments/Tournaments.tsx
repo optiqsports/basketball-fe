@@ -40,6 +40,7 @@ interface Match {
   teamBColor: string;
   venue: string;
   time: string;
+  hasStarted: boolean;
 }
 
 const CompetitionDetailPage: React.FC = () => {
@@ -47,6 +48,7 @@ const CompetitionDetailPage: React.FC = () => {
   const { id } = useParams();
   const [activeGroup, setActiveGroup] = useState('A');
   const [matchCode] = useState('ABC123XYZ');
+  const [showSchedules, setShowSchedules] = useState(true);
 
   const teams: Team[] = [
     { id: 1, name: 'TEAM', color: 'yellow', gp: 0, w: 0, l: 0, percent: 0, points: 0 },
@@ -57,9 +59,9 @@ const CompetitionDetailPage: React.FC = () => {
   ];
 
   const matches: Match[] = [
-    { id: 1, teamA: 'TEAM A', teamAColor: 'yellow', teamB: 'TEAM B', teamBColor: 'blue', venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
-    { id: 2, teamA: 'TEAM A', teamAColor: 'yellow', teamB: 'TEAM B', teamBColor: 'blue', venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
-    { id: 3, teamA: 'TEAM A', teamAColor: 'yellow', teamB: 'TEAM B', teamBColor: 'blue', venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
+    { id: 1, teamA: 'TEAM A', teamAColor: 'yellow', teamB: 'TEAM B', teamBColor: 'blue', venue: 'Match Venue', time: '12:40PM, 11 November 2025', hasStarted: false },
+    { id: 2, teamA: 'TEAM A', teamAColor: 'yellow', teamB: 'TEAM B', teamBColor: 'blue', venue: 'Match Venue', time: '12:40PM, 11 November 2025', hasStarted: false },
+    { id: 3, teamA: 'TEAM A', teamAColor: 'yellow', teamB: 'TEAM B', teamBColor: 'blue', venue: 'Match Venue', time: '12:40PM, 11 November 2025', hasStarted: true },
   ];
 
   const handleCopyCode = () => {
@@ -189,21 +191,33 @@ const CompetitionDetailPage: React.FC = () => {
           {/* Fixtures List */}
           <div>
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold text-gray-800">Schedules</h2>
+              <div className="flex items-center gap-3">
+                <button 
+                  onClick={() => setShowSchedules(!showSchedules)}
+                  className="text-gray-600 hover:text-gray-800 cursor-pointer"
+                >
+                  <span className="text-lg">{showSchedules ? '▼' : '▶'}</span>
+                </button>
+                <h2 className="text-lg font-semibold text-gray-800">Schedules ({matches.length})</h2>
+              </div>
               <button 
                 onClick={() => navigate(`/tournaments/${id ?? '1'}/schedules`)}
-                className="text-sm text-[#21409A] hover:underline font-medium"
+                className="text-sm text-[#21409A] hover:underline font-medium cursor-pointer"
               >
                 View All
               </button>
             </div>
+            {showSchedules && (
             <div className="space-y-4">
             {matches.map((match) => (
               <div 
                 key={match.id} 
                 className="rounded-lg shadow-sm p-5 border cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:ring-1 hover:ring-gray-300" 
                 style={{ background: '#F8F8F8', border: '1px solid #A9A9A91A' }}
-                onClick={() => navigate(`/tournaments/${id ?? '1'}/match/${match.id}`)}
+                onClick={() => navigate(match.hasStarted 
+                  ? `/tournaments/${id ?? '1'}/match/${match.id}` 
+                  : `/tournaments/${id ?? '1'}/match/${match.id}/pending`
+                )}
               >
                 <div className="flex justify-between items-start">
                   {/* Teams (left) */}
@@ -242,6 +256,7 @@ const CompetitionDetailPage: React.FC = () => {
               </div>
             ))}
             </div>
+            )}
           </div>
         </div>
 

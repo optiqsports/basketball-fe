@@ -11,6 +11,7 @@ interface Game {
   time: string;
   period: string;
   venue: string;
+  isExpanded: boolean;
 }
 
 const Fixtures: React.FC = () => {
@@ -21,7 +22,7 @@ const Fixtures: React.FC = () => {
   const [round, setRound] = useState('Group stage');
   
   const [games, setGames] = useState<Game[]>([
-    { id: 1, homeTeam: 'TEAM A', awayTeam: 'TEAM A', day: '', month: '', year: '', time: '10-17', period: 'AM', venue: 'Court' },
+    { id: 1, homeTeam: 'TEAM A', awayTeam: 'TEAM A', day: '', month: '', year: '', time: '10-17', period: 'AM', venue: 'Court', isExpanded: true },
   ]);
 
   const addGame = () => {
@@ -34,8 +35,15 @@ const Fixtures: React.FC = () => {
       year: '', 
       time: '', 
       period: 'AM', 
-      venue: '' 
+      venue: '',
+      isExpanded: false
     }]);
+  };
+
+  const toggleGame = (gameId: number) => {
+    setGames(games.map(game => 
+      game.id === gameId ? { ...game, isExpanded: !game.isExpanded } : game
+    ));
   };
 
   return (
@@ -45,7 +53,7 @@ const Fixtures: React.FC = () => {
         <div className="mb-6">
           <button 
             onClick={() => navigate(-1)}
-            className="text-gray-600 hover:text-gray-800 mb-4 flex items-center gap-2"
+            className="text-gray-600 hover:text-gray-800 mb-4 flex items-center gap-2 cursor-pointer"
           >
             <span>←</span> Back to Tournament
           </button>
@@ -103,10 +111,17 @@ const Fixtures: React.FC = () => {
         <div className="space-y-6">
           {games.map((game, index) => (
             <div key={game.id} className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
+              <div 
+                className="flex items-center gap-3 mb-6 cursor-pointer"
+                onClick={() => toggleGame(game.id)}
+              >
+                <div className={`w-2 h-2 rounded-full ${game.isExpanded ? 'bg-green-500' : 'bg-gray-400'}`}></div>
                 <h3 className="text-base font-semibold text-gray-800">Game {index + 1}</h3>
+                <span className="ml-auto text-gray-600">{game.isExpanded ? '▼' : '▶'}</span>
               </div>
+
+              {game.isExpanded && (
+              <>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Home Team */}
@@ -192,16 +207,8 @@ const Fixtures: React.FC = () => {
                   />
                 </div>
               </div>
-            </div>
-          ))}
-
-          {/* Collapsed Game Items */}
-          {[2, 3, 4].map((num) => (
-            <div key={num} className="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-gray-400"></div>
-                <h3 className="text-base font-medium text-gray-600">Game {num}</h3>
-              </div>
+              </>
+              )}
             </div>
           ))}
         </div>
@@ -210,13 +217,13 @@ const Fixtures: React.FC = () => {
         <div className="flex gap-4 mt-8">
           <button 
             onClick={addGame}
-            className="px-6 py-3 bg-[#21409A] text-white rounded-lg font-medium hover:bg-blue-800 transition-colors"
+            className="px-6 py-3 bg-[#21409A] text-white rounded-lg font-medium hover:bg-blue-800 transition-colors cursor-pointer"
           >
             Add Game
           </button>
           <button
             onClick={() => navigate('/tournaments')}
-            className="px-6 py-3 bg-[#21409A] text-white rounded-lg font-medium hover:bg-blue-800 transition-colors"
+            className="px-6 py-3 bg-[#21409A] text-white rounded-lg font-medium hover:bg-blue-800 transition-colors cursor-pointer"
           >
             Save
           </button>

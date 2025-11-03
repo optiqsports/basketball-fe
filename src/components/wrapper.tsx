@@ -14,6 +14,9 @@ import TournamentsListing from '../pages/tournaments/TournamentsListing'
 import Tournaments from '../pages/tournaments/Tournaments'
 import Fixtures from '../pages/tournaments/Fixtures'
 import Schedules from '../pages/tournaments/Schedules'
+import PendingGames from '../pages/tournaments/PendingGames'
+import Results from '../pages/results/result'
+import ShotChart from '../pages/tournaments/ShotChart'
 
 const Wrapper: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -75,9 +78,11 @@ const Wrapper: React.FC = () => {
             <Route path="/tournaments/:id" element={<Tournaments />} />
             <Route path="/tournaments/:id/fixtures" element={<Fixtures />} />
             <Route path="/tournaments/:id/schedules" element={<Schedules />} />
+            <Route path="/tournaments/:id/match/:matchId/pending" element={<PendingGames />} />
+            <Route path="/tournaments/:id/match/:matchId/shotchart" element={<ShotChart />} />
             <Route path="/tournaments/:id/match/:matchId" element={<MatchPage />} />
             <Route path="/tournaments/:id/match/:matchId/player/:playerId" element={<PlayerDetails />} />
-            <Route path="/results" element={<div className="p-8"><h1 className="text-2xl font-bold">Results</h1></div>} />
+            <Route path="/results" element={<Results />} />
             <Route path="/statisticians" element={<div className="p-8"><h1 className="text-2xl font-bold">Statisticians</h1></div>} />
             <Route path="/" element={<Dashboard />} />
           </Routes>
