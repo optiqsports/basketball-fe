@@ -39,6 +39,14 @@ const GameScorePage: React.FC = () => {
   const [showBoxScore, setShowBoxScore] = useState(false);
   const [activeTeam, setActiveTeam] = useState<'A' | 'B'>('A');
   const [activeTab, setActiveTab] = useState<'stats' | 'boxscore' | 'shotchart'>('stats');
+  
+  // Team A player selection state
+  const [teamAAllPlayers, setTeamAAllPlayers] = useState(true);
+  const [teamASelectedPlayers, setTeamASelectedPlayers] = useState<number[]>([]);
+  
+  // Team B player selection state
+  const [teamBAllPlayers, setTeamBAllPlayers] = useState(true);
+  const [teamBSelectedPlayers, setTeamBSelectedPlayers] = useState<number[]>([]);
 
   const teamAScore: QuarterScore = { q1: 17, q2: 0, q3: 0, q4: 0 };
   const teamBScore: QuarterScore = { q1: 17, q2: 0, q3: 0, q4: 0 };
@@ -58,6 +66,52 @@ const GameScorePage: React.FC = () => {
   const handlePlayerClick = (playerId: number) => {
     navigate(`/tournaments/${id}/match/${matchId}/player/${playerId}`);
   };
+
+  // Team A handlers
+  const handleTeamAAllPlayersChange = (checked: boolean) => {
+    setTeamAAllPlayers(checked);
+    if (checked) {
+      setTeamASelectedPlayers([]);
+    }
+  };
+
+  const handleTeamAPlayerChange = (playerIndex: number, checked: boolean) => {
+    if (checked) {
+      setTeamASelectedPlayers([...teamASelectedPlayers, playerIndex]);
+      setTeamAAllPlayers(false);
+    } else {
+      const updated = teamASelectedPlayers.filter(idx => idx !== playerIndex);
+      setTeamASelectedPlayers(updated);
+      if (updated.length === 0) {
+        setTeamAAllPlayers(true);
+      }
+    }
+  };
+
+  // Team B handlers
+  const handleTeamBAllPlayersChange = (checked: boolean) => {
+    setTeamBAllPlayers(checked);
+    if (checked) {
+      setTeamBSelectedPlayers([]);
+    }
+  };
+
+  const handleTeamBPlayerChange = (playerIndex: number, checked: boolean) => {
+    if (checked) {
+      setTeamBSelectedPlayers([...teamBSelectedPlayers, playerIndex]);
+      setTeamBAllPlayers(false);
+    } else {
+      const updated = teamBSelectedPlayers.filter(idx => idx !== playerIndex);
+      setTeamBSelectedPlayers(updated);
+      if (updated.length === 0) {
+        setTeamBAllPlayers(true);
+      }
+    }
+  };
+
+  // Determine if player image should be shown
+  const shouldShowTeamAImage = !teamAAllPlayers && teamASelectedPlayers.length > 0;
+  const shouldShowTeamBImage = !teamBAllPlayers && teamBSelectedPlayers.length > 0;
 
   return (
     <div className="min-h-screen bg-white p-6">
@@ -228,169 +282,189 @@ const GameScorePage: React.FC = () => {
             </div>
 
             {/* Basketball Court with Shot Chart */}
-            <div className="bg-gradient-to-b from-blue-100 to-blue-50 rounded-lg p-8 mb-6 border border-gray-200">
-              <div className="bg-[#4A90E2] rounded-lg p-4 max-w-3xl mx-auto relative" style={{ aspectRatio: '16/10' }}>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-white text-sm opacity-50">Basketball Court Diagram</div>
-                </div>
-              </div>
+            <div className="bg-gradient-to-b from-blue-100 to-blue-50 rounded-lg p-8 mb-6 border border-gray-200 flex justify-center">
+              <img src="/court.png" alt="Basketball Court" className="w-2xl h-w-3xl-lg mb-4 object-cover" />
               
-              {/* Legend */}
-              <div className="flex justify-center gap-6 mt-4">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500" />
-                  <span className="w-3 h-3 bg-orange-400 rounded-full"></span>
-                  <span className="text-sm text-gray-700">Made</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500" />
-                  <span className="text-gray-600 text-lg">✕</span>
-                  <span className="text-sm text-gray-700">Missed</span>
-                </label>
-              </div>
             </div>
 
-            {/* Player Cards */}
-            <div className="flex gap-[23px] mb-6 justify-center" style={{ marginTop: '42px' }}>
-              {/* Player 1 - Yellow */}
-              <div
-                className="rounded-2xl overflow-hidden bg-[#FFCA69] relative"
-                style={{ width: '335px', height: '374px' }}
-              >
-                <div className="absolute left-4 top-4 z-10">
-                  <div className="text-white font-medium mb-1">Name</div>
-                  <div className="text-white font-bold text-lg mb-1">Surname</div>
-                  <div className="bg-white text-gray-900 font-bold text-sm w-8 h-8 flex items-center justify-center rounded-md mb-4">
-                    11
-                  </div>
-                  <div className="mb-2">
-                    <div className="relative w-16 h-16">
-                      <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 100 100">
-                        {/* Background circle */}
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="40"
-                          stroke="#E5E7EB"
-                          strokeWidth="8"
-                          fill="none"
-                        />
-                        {/* Progress circle */}
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="40"
-                          stroke="#80B7D5"
-                          strokeWidth="8"
-                          fill="none"
-                          strokeDasharray="251.2"
-                          strokeDashoffset="125.6"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="text-[10px] font-bold text-gray-800">FG%</div>
+            {/* Player Cards and Selection Lists Container */}
+            <div className="flex gap-[23px] justify-center" style={{ marginTop: '42px' }}>
+              {/* Team A Section */}
+              <div className="flex flex-col">
+                {/* Player 1 - Yellow */}
+                {shouldShowTeamAImage && (
+                  <>
+                    <div
+                      className="rounded-2xl overflow-hidden bg-[#FFCA69] relative mb-6"
+                      style={{ width: '335px', height: '374px' }}
+                    >
+                      <div className="absolute left-4 top-4 z-10">
+                        <div className="text-white font-medium mb-1">Name</div>
+                        <div className="text-white font-bold text-lg mb-1">Surname</div>
+                        <div className="bg-white text-gray-900 font-bold text-sm w-8 h-8 flex items-center justify-center rounded-md mb-4">
+                          11
+                        </div>
+                        <div className="mb-2">
+                          <div className="relative w-16 h-16">
+                            <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 100 100">
+                              {/* Background circle */}
+                              <circle
+                                cx="50"
+                                cy="50"
+                                r="40"
+                                stroke="#E5E7EB"
+                                strokeWidth="8"
+                                fill="none"
+                              />
+                              {/* Progress circle */}
+                              <circle
+                                cx="50"
+                                cy="50"
+                                r="40"
+                                stroke="#80B7D5"
+                                strokeWidth="8"
+                                fill="none"
+                                strokeDasharray="251.2"
+                                strokeDashoffset="125.6"
+                                strokeLinecap="round"
+                              />
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="text-center">
+                                <div className="text-[10px] font-bold text-gray-800">FG%</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-white font-bold text-sm mt-1">50%</div>
+                          <div className="text-white text-xs">(10/20)</div>
                         </div>
                       </div>
-                    </div>
-                    <div className="text-white font-bold text-sm mt-1">50%</div>
-                    <div className="text-white text-xs">(10/20)</div>
-                  </div>
-                </div>
-                <div className="relative" style={{ height: '374px' }}>
-                  <img
-                    src="/player1.png"
-                    alt="Player"
-                    className="w-[21rem] ml-0 mx-auto absolute mt-[4.7rem]"
-                  />
-                </div>
-              </div>
-
-              {/* Player 2 - Blue */}
-              <div
-                className="rounded-2xl overflow-hidden bg-[#80B7D5] relative"
-                style={{ width: '335px', height: '374px' }}
-              >
-                <div className="absolute left-4 top-4 z-10">
-                  <div className="text-white font-medium mb-1">Name</div>
-                  <div className="text-white font-bold text-lg mb-1">Surname</div>
-                  <div className="bg-white text-gray-900 font-bold text-sm w-8 h-8 flex items-center justify-center rounded-md mb-4">
-                    23
-                  </div>
-                  <div className="mb-2">
-                    <div className="relative w-16 h-16">
-                      <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 100 100">
-                        {/* Background circle */}
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="40"
-                          stroke="#E5E7EB"
-                          strokeWidth="8"
-                          fill="none"
+                      <div className="relative" style={{ height: '374px' }}>
+                        <img
+                          src="/player1.png"
+                          alt="Player"
+                          className="w-[21rem] ml-0 mx-auto absolute mt-[4.7rem]"
                         />
-                        {/* Progress circle */}
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="40"
-                          stroke="#FFCA69"
-                          strokeWidth="8"
-                          fill="none"
-                          strokeDasharray="251.2"
-                          strokeDashoffset="125.6"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="text-[10px] font-bold text-gray-800">FG%</div>
-                        </div>
                       </div>
                     </div>
-                    <div className="text-white font-bold text-sm mt-1">50%</div>
-                    <div className="text-white text-xs">(10/20)</div>
-                  </div>
-                </div>
-                <div className="relative" style={{ height: '374px' }}>
-                  <img
-                    src="/player2.png"
-                    alt="Player"
-                    className="w-[21rem] ml-0 mx-auto absolute mt-[4.7rem]"
-                  />
+
+                    {/* Divider */}
+                    <div className="border-t-2 border-dashed border-gray-300 mb-6" style={{ width: '335px' }}></div>
+                  </>
+                )}
+
+                {/* Team A Players Selection List */}
+                <div className="space-y-3" style={{ width: '335px' }}>
+                  <label className="flex items-center gap-3 p-3 bg-yellow-50 rounded-lg cursor-pointer hover:bg-yellow-100">
+                    <input 
+                      type="checkbox" 
+                      checked={teamAAllPlayers}
+                      onChange={(e) => handleTeamAAllPlayersChange(e.target.checked)}
+                      className="w-4 h-4 rounded border-gray-300 text-yellow-500 focus:ring-yellow-500" 
+                    />
+                    <span className="text-sm font-medium text-gray-700">All Players</span>
+                  </label>
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <label key={i} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50">
+                      <input 
+                        type="checkbox" 
+                        checked={teamASelectedPlayers.includes(i)}
+                        onChange={(e) => handleTeamAPlayerChange(i, e.target.checked)}
+                        className="w-4 h-4 rounded border-gray-300 text-yellow-500 focus:ring-yellow-500" 
+                      />
+                      <span className="text-sm text-gray-700">Name Surname</span>
+                    </label>
+                  ))}
                 </div>
               </div>
-            </div>
 
-            {/* Player Selection Lists */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Team A Players */}
-              <div className="space-y-3">
-                <label className="flex items-center gap-3 p-3 bg-yellow-50 rounded-lg cursor-pointer hover:bg-yellow-100">
-                  <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-gray-300 text-yellow-500 focus:ring-yellow-500" />
-                  <span className="text-sm font-medium text-gray-700">All Players</span>
-                </label>
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <label key={i} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50">
-                    <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-gray-300 text-yellow-500 focus:ring-yellow-500" />
-                    <span className="text-sm text-gray-700">Name Surname</span>
-                  </label>
-                ))}
-              </div>
+              {/* Team B Section */}
+              <div className="flex flex-col">
+                {/* Player 2 - Blue */}
+                {shouldShowTeamBImage && (
+                  <>
+                    <div
+                      className="rounded-2xl overflow-hidden bg-[#80B7D5] relative mb-6"
+                      style={{ width: '335px', height: '374px' }}
+                    >
+                      <div className="absolute left-4 top-4 z-10">
+                        <div className="text-white font-medium mb-1">Name</div>
+                        <div className="text-white font-bold text-lg mb-1">Surname</div>
+                        <div className="bg-white text-gray-900 font-bold text-sm w-8 h-8 flex items-center justify-center rounded-md mb-4">
+                          23
+                        </div>
+                        <div className="mb-2">
+                          <div className="relative w-16 h-16">
+                            <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 100 100">
+                              {/* Background circle */}
+                              <circle
+                                cx="50"
+                                cy="50"
+                                r="40"
+                                stroke="#E5E7EB"
+                                strokeWidth="8"
+                                fill="none"
+                              />
+                              {/* Progress circle */}
+                              <circle
+                                cx="50"
+                                cy="50"
+                                r="40"
+                                stroke="#FFCA69"
+                                strokeWidth="8"
+                                fill="none"
+                                strokeDasharray="251.2"
+                                strokeDashoffset="125.6"
+                                strokeLinecap="round"
+                              />
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="text-center">
+                                <div className="text-[10px] font-bold text-gray-800">FG%</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-white font-bold text-sm mt-1">50%</div>
+                          <div className="text-white text-xs">(10/20)</div>
+                        </div>
+                      </div>
+                      <div className="relative" style={{ height: '374px' }}>
+                        <img
+                          src="/player2.png"
+                          alt="Player"
+                          className="w-[21rem] ml-0 mx-auto absolute mt-[4.7rem]"
+                        />
+                      </div>
+                    </div>
 
-              {/* Team B Players */}
-              <div className="space-y-3">
-                <label className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100">
-                  <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500" />
-                  <span className="text-sm font-medium text-gray-700">All Players</span>
-                </label>
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <label key={i} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50">
-                    <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500" />
-                    <span className="text-sm text-gray-700">Name Surname</span>
+                    {/* Divider */}
+                    <div className="border-t-2 border-dashed border-gray-300 mb-6" style={{ width: '335px' }}></div>
+                  </>
+                )}
+
+                {/* Team B Players Selection List */}
+                <div className="space-y-3" style={{ width: '335px' }}>
+                  <label className="flex items-center justify-end gap-3 p-3 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100">
+                    <span className="text-sm font-medium text-gray-700">All Players</span>
+                    <input 
+                      type="checkbox" 
+                      checked={teamBAllPlayers}
+                      onChange={(e) => handleTeamBAllPlayersChange(e.target.checked)}
+                      className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500" 
+                    />
                   </label>
-                ))}
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <label key={i} className="flex items-center justify-end gap-3 p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50">
+                      <span className="text-sm text-gray-700">Name Surname</span>
+                      <input 
+                        type="checkbox" 
+                        checked={teamBSelectedPlayers.includes(i)}
+                        onChange={(e) => handleTeamBPlayerChange(i, e.target.checked)}
+                        className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500" 
+                      />
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

@@ -17,6 +17,8 @@ import Schedules from '../pages/tournaments/Schedules'
 import PendingGames from '../pages/tournaments/PendingGames'
 import Results from '../pages/results/result'
 import ShotChart from '../pages/tournaments/ShotChart'
+import Statisticians from '../pages/Statisticians/Statisticians'
+import ViewStat from '../pages/Statisticians/viewStat'
 
 const Wrapper: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -83,7 +85,8 @@ const Wrapper: React.FC = () => {
             <Route path="/tournaments/:id/match/:matchId" element={<MatchPage />} />
             <Route path="/tournaments/:id/match/:matchId/player/:playerId" element={<PlayerDetails />} />
             <Route path="/results" element={<Results />} />
-            <Route path="/statisticians" element={<div className="p-8"><h1 className="text-2xl font-bold">Statisticians</h1></div>} />
+            <Route path="/statisticians" element={<Statisticians />} />
+            <Route path="/statisticians/:id" element={<ViewStat />} />
             <Route path="/" element={<Dashboard />} />
           </Routes>
         </main>
