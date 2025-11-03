@@ -47,6 +47,10 @@ const GameScorePage: React.FC = () => {
   // Team B player selection state
   const [teamBAllPlayers, setTeamBAllPlayers] = useState(true);
   const [teamBSelectedPlayers, setTeamBSelectedPlayers] = useState<number[]>([]);
+  
+  // Legend filter state
+  const [showMade, setShowMade] = useState(true);
+  const [showMissed, setShowMissed] = useState(true);
 
   const teamAScore: QuarterScore = { q1: 17, q2: 0, q3: 0, q4: 0 };
   const teamBScore: QuarterScore = { q1: 17, q2: 0, q3: 0, q4: 0 };
@@ -228,7 +232,10 @@ const GameScorePage: React.FC = () => {
         {/* Main Tabs */}
         <div className="flex gap-3 mb-6 justify-center">
           <button
-            onClick={() => setActiveTab('stats')}
+            onClick={() => {
+              setActiveTab('stats');
+              setShowBoxScore(false);
+            }}
             className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
               activeTab === 'stats'
                 ? 'bg-[#21409A] text-white shadow-md'
@@ -238,7 +245,10 @@ const GameScorePage: React.FC = () => {
             Game Stats
           </button>
           <button
-            onClick={() => setActiveTab('boxscore')}
+            onClick={() => {
+              setActiveTab('boxscore');
+              setShowBoxScore(true);
+            }}
             className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
               activeTab === 'boxscore'
                 ? 'bg-[#21409A] text-white shadow-md'
@@ -248,7 +258,10 @@ const GameScorePage: React.FC = () => {
             Box Score
           </button>
           <button
-            onClick={() => setActiveTab('shotchart')}
+            onClick={() => {
+              setActiveTab('shotchart');
+              setShowBoxScore(false);
+            }}
             className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
               activeTab === 'shotchart'
                 ? 'bg-[#21409A] text-white shadow-md'
@@ -282,10 +295,57 @@ const GameScorePage: React.FC = () => {
             </div>
 
             {/* Basketball Court with Shot Chart */}
-            <div className="bg-gradient-to-b from-blue-100 to-blue-50 rounded-lg p-8 mb-6 border border-gray-200 flex justify-center">
-              <img src="/court.png" alt="Basketball Court" className="w-2xl h-w-3xl-lg mb-4 object-cover" />
+            <div className="bg-gradient-to-b from-blue-100 to-blue-50 rounded-lg p-8 mb-6 border border-gray-200 flex flex-col items-center">
+              <img src="/court.png" alt="Basketball Court" className="w-2xl h-w-3xl-lg mb-6 object-cover" />
               
+              {/* Legend */}
+              <div className="flex items-center gap-6">
+                {/* Made */}
+                <button
+                  onClick={() => setShowMade(!showMade)}
+                  className={`flex items-center gap-2 cursor-pointer transition-opacity ${
+                    showMade ? 'opacity-100' : 'opacity-40'
+                  } hover:opacity-80`}
+                >
+                  <div className={`w-5 h-5 ${showMade ? 'bg-blue-900' : 'bg-gray-400'} rounded flex items-center justify-center`}>
+                    {showMade && (
+                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className={`w-2 h-2 ${showMade ? 'bg-blue-900' : 'bg-gray-400'} rounded-full`}></div>
+                  <span className="text-sm font-medium text-gray-700">Made</span>
+                </button>
+
+                {/* Missed */}
+                <button
+                  onClick={() => setShowMissed(!showMissed)}
+                  className={`flex items-center gap-2 cursor-pointer transition-opacity ${
+                    showMissed ? 'opacity-100' : 'opacity-40'
+                  } hover:opacity-80`}
+                >
+                  <div className={`w-5 h-5 ${showMissed ? 'bg-blue-200' : 'bg-gray-300'} rounded flex items-center justify-center`}>
+                    {showMissed && (
+                      <svg className="w-3.5 h-3.5 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className="w-2 h-2 flex items-center justify-center">
+                    {showMissed ? (
+                      <svg className="w-2.5 h-2.5 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    ) : (
+                      <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                    )}
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">Missed</span>
+                </button>
+              </div>
             </div>
+
 
             {/* Player Cards and Selection Lists Container */}
             <div className="flex gap-[23px] justify-center" style={{ marginTop: '42px' }}>

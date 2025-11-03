@@ -60,16 +60,16 @@ const BasketballDashboard: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const upNextGames = [
-    { teamA: 'TEAM A', teamB: 'TEAM B', venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
-    { teamA: 'TEAM C', teamB: 'TEAM D', venue: 'Match Venue', time: '2:00PM, 11 November 2025' },
-    { teamA: 'TEAM E', teamB: 'TEAM F', venue: 'Match Venue', time: '4:30PM, 11 November 2025' },
+    { id: 1, tournamentId: 1, teamA: 'TEAM A', teamB: 'TEAM B', venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
+    { id: 2, tournamentId: 1, teamA: 'TEAM C', teamB: 'TEAM D', venue: 'Match Venue', time: '2:00PM, 11 November 2025' },
+    { id: 3, tournamentId: 1, teamA: 'TEAM E', teamB: 'TEAM F', venue: 'Match Venue', time: '4:30PM, 11 November 2025' },
   ];
 
   const recentGames = [
-    { teamA: 'TEAM A', scoreA: 120, teamB: 'TEAM B', scoreB: 98, venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
-    { teamA: 'TEAM A', scoreA: 120, teamB: 'TEAM B', scoreB: 98, venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
-    { teamA: 'TEAM A', scoreA: 120, teamB: 'TEAM B', scoreB: 98, venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
-    { teamA: 'TEAM A', scoreA: 120, teamB: 'TEAM B', scoreB: 98, venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
+    { id: 4, tournamentId: 1, teamA: 'TEAM A', scoreA: 120, teamB: 'TEAM B', scoreB: 98, venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
+    { id: 5, tournamentId: 1, teamA: 'TEAM A', scoreA: 120, teamB: 'TEAM B', scoreB: 98, venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
+    { id: 6, tournamentId: 1, teamA: 'TEAM A', scoreA: 120, teamB: 'TEAM B', scoreB: 98, venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
+    { id: 7, tournamentId: 1, teamA: 'TEAM A', scoreA: 120, teamB: 'TEAM B', scoreB: 98, venue: 'Match Venue', time: '12:40PM, 11 November 2025' },
   ];
 
   const tournaments = [
@@ -111,7 +111,10 @@ const BasketballDashboard: React.FC = () => {
           {/* Left Column */}
           <div className="space-y-6">
             {/* Ongoing Game */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
+            <div 
+              className="bg-white rounded-2xl p-6 shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+              onClick={() => navigate('/tournaments/1/match/1')}
+            >
               <h2 className="text-sm font-semibold text-gray-700 mb-4">Ongoing Game</h2>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -157,7 +160,10 @@ const BasketballDashboard: React.FC = () => {
                     <ChevronLeftIcon className="w-5 h-5" />
                   </button>
 
-                  <div className="flex-1 mx-4">
+                  <div 
+                    className="flex-1 mx-4 cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => navigate(`/tournaments/${upNextGames[currentSlide].tournamentId}/match/${upNextGames[currentSlide].id}`)}
+                  >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="flex items-center justify-center">
@@ -282,7 +288,11 @@ const BasketballDashboard: React.FC = () => {
               
               <div className="space-y-3">
                 {recentGames.map((game, idx) => (
-                  <div key={idx} className="bg-gray-50 rounded-xl p-4">
+                  <div 
+                    key={idx} 
+                    className="bg-gray-50 rounded-xl p-4 cursor-pointer hover:bg-gray-100 transition-colors"
+                    onClick={() => navigate(`/tournaments/${game.tournamentId}/match/${game.id}`)}
+                  >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <div className="flex items-center justify-center">

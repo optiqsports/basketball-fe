@@ -34,6 +34,7 @@ const StartNew: React.FC = () => {
   const [quarterDuration, setQuarterDuration] = useState('10 Mins');
   const [overtimeDuration, setOvertimeDuration] = useState('10 Mins');
   const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
   const [court, setCourt] = useState('');
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
@@ -89,14 +90,14 @@ const StartNew: React.FC = () => {
             {/* Left Column */}
             <div className="lg:col-span-3 space-y-6">
               
-              {/* Competition Name */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Competition</label>
-                <input
-                  type="text"
-                  placeholder="Name Here"
-                  value={competitionName}
-                  onChange={(e) => setCompetitionName(e.target.value)}
+            {/* Competition Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Competition</label>
+              <input
+                type="text"
+                placeholder="Name Here"
+                value={competitionName}
+                onChange={(e) => setCompetitionName(e.target.value)}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                 />
               </div>
@@ -111,8 +112,8 @@ const StartNew: React.FC = () => {
                     value={competitionShortName}
                     onChange={(e) => setCompetitionShortName(e.target.value)}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                  />
-                </div>
+              />
+            </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -132,78 +133,89 @@ const StartNew: React.FC = () => {
               </div>
 
               {/* Number of Games & Quarters */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Number of Games</label>
-                  <input
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Number of Games</label>
+                <input
                     type="number"
                     min={1}
                     step={1}
                     placeholder="Enter number of games"
-                    value={numberOfGames}
-                    onChange={(e) => setNumberOfGames(e.target.value)}
+                  value={numberOfGames}
+                  onChange={(e) => setNumberOfGames(e.target.value)}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                  />
-                </div>
+                />
+              </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Number of Quarters</label>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Number of Quarters</label>
                   <select
-                    value={numberOfQuarters}
-                    onChange={(e) => setNumberOfQuarters(e.target.value)}
+                  value={numberOfQuarters}
+                  onChange={(e) => setNumberOfQuarters(e.target.value)}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                   >
                     <option value="2">2</option>
                     <option value="4">4</option>
                     <option value="6">6</option>
                   </select>
-                </div>
               </div>
+            </div>
 
               {/* Quarter Duration & Overtime Duration */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Quarter Duration</label>
-                  <input
-                    type="text"
-                    value={quarterDuration}
-                    onChange={(e) => setQuarterDuration(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Overtime Duration</label>
-                  <input
-                    type="text"
-                    value={overtimeDuration}
-                    onChange={(e) => setOvertimeDuration(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                  />
-                </div>
-              </div>
-
-              {/* Date */}
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                />
-              </div>
-
-              {/* Venue */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Venue</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Quarter Duration</label>
                 <input
                   type="text"
-                  placeholder="Court"
-                  value={court}
-                  onChange={(e) => setCourt(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 mb-3"
+                  value={quarterDuration}
+                  onChange={(e) => setQuarterDuration(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                 />
-                <div className="grid grid-cols-2 gap-3">
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Overtime Duration</label>
+                <input
+                  type="text"
+                  value={overtimeDuration}
+                  onChange={(e) => setOvertimeDuration(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                />
+              </div>
+            </div>
+
+            {/* Date and Time */}
+              <div className="grid grid-cols-2 gap-4">
+            <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+                <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Time</label>
+                <input
+                    type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  />
+              </div>
+            </div>
+
+            {/* Venue */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Venue</label>
+              <input
+                type="text"
+                placeholder="Court"
+                value={court}
+                onChange={(e) => setCourt(e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 mb-3"
+              />
+              <div className="grid grid-cols-2 gap-3">
                   <select
                     value={country}
                     onChange={(e) => handleCountryChange(e.target.value)}
@@ -217,8 +229,8 @@ const StartNew: React.FC = () => {
                     ))}
                   </select>
                   <select
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
                     disabled={!country}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white disabled:bg-gray-100 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                   >
@@ -229,50 +241,50 @@ const StartNew: React.FC = () => {
                       </option>
                     ))}
                   </select>
-                </div>
-              </div>
-
-              {/* Officials */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">Officials</label>
-                <div className="space-y-3">
-                  {officials.map((official, index) => (
-                    <div key={official.id} className="grid grid-cols-12 gap-3 items-center">
-                      <div className="col-span-1 text-sm text-gray-600">{index + 1}.</div>
-                      <input
-                        type="text"
-                        placeholder="Name Surname"
-                        value={official.name}
-                        onChange={(e) => handleOfficialChange(official.id, 'name', e.target.value)}
-                        className="col-span-6 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                      />
-                      <div className="col-span-3">
-                        <select
-                          value={official.role}
-                          onChange={(e) => handleOfficialChange(official.id, 'role', e.target.value)}
-                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                        >
-                          <option value="Crew Chief">Crew Chief</option>
-                          <option value="Umpire">Umpire</option>
-                          <option value="Commissioner">Commissioner</option>
-                          <option value="Referee">Referee</option>
-                        </select>
-                      </div>
-                      <input
-                        type="text"
-                        placeholder="Shirt No."
-                        value={official.shirtNumber}
-                        onChange={(e) => handleOfficialChange(official.id, 'shirtNumber', e.target.value)}
-                        className="col-span-2 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                      />
-                    </div>
-                  ))}
-                </div>
               </div>
             </div>
 
-            {/* Right Column - Upload Flyer */}
-            <div className="lg:col-span-1">
+            {/* Officials */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">Officials</label>
+              <div className="space-y-3">
+                {officials.map((official, index) => (
+                  <div key={official.id} className="grid grid-cols-12 gap-3 items-center">
+                    <div className="col-span-1 text-sm text-gray-600">{index + 1}.</div>
+                    <input
+                      type="text"
+                      placeholder="Name Surname"
+                      value={official.name}
+                      onChange={(e) => handleOfficialChange(official.id, 'name', e.target.value)}
+                        className="col-span-6 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                    />
+                    <div className="col-span-3">
+                      <select
+                        value={official.role}
+                        onChange={(e) => handleOfficialChange(official.id, 'role', e.target.value)}
+                          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                      >
+                        <option value="Crew Chief">Crew Chief</option>
+                        <option value="Umpire">Umpire</option>
+                        <option value="Commissioner">Commissioner</option>
+                        <option value="Referee">Referee</option>
+                      </select>
+                    </div>
+                    <input
+                      type="text"
+                        placeholder="Shirt No."
+                      value={official.shirtNumber}
+                      onChange={(e) => handleOfficialChange(official.id, 'shirtNumber', e.target.value)}
+                        className="col-span-2 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Upload Flyer */}
+          <div className="lg:col-span-1">
               <label
                 htmlFor="flyer-upload"
                 className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-gray-400 transition-colors bg-gray-50"

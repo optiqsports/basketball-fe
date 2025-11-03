@@ -78,11 +78,18 @@ const CompetitionDetailPage: React.FC = () => {
         </div>
 
         {/* Ongoing Game Card */}
-        <div className="rounded-lg shadow-sm p-6 mb-6 border" style={{ background: '#FCFEFF', border: '1px solid #A9A9A91A' }}>
+        <div 
+          className="rounded-lg shadow-sm p-6 mb-6 border cursor-pointer hover:shadow-md transition-shadow" 
+          style={{ background: '#FCFEFF', border: '1px solid #A9A9A91A' }}
+          onClick={() => navigate(`/tournaments/${id ?? '1'}/match/1`)}
+        >
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-sm font-semibold text-gray-700">Ongoing Game</h2>
             <button 
-              onClick={handleCopyCode}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCopyCode();
+              }}
               className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
             >
               <span>Copy Match Code</span>

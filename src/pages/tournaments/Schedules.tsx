@@ -23,6 +23,7 @@ interface Match {
   venue: string;
   matchVenue: string;
   matchDateTime: string;
+  matchCode: string;
   isEditing: boolean;
   hasStarted: boolean;
 }
@@ -32,10 +33,11 @@ const Schedules: React.FC = () => {
   const navigate = useNavigate();
   const [activeGroup, setActiveGroup] = useState('A');
   const [activeFilter, setActiveFilter] = useState('all');
-  const [matchCode] = useState('ABC123XYZ');
 
-  const handleCopyCode = () => {
+  const handleCopyCode = (matchCode: string, e: React.MouseEvent) => {
+    e.stopPropagation();
     navigator.clipboard.writeText(matchCode);
+    // You can replace alert with a toast notification library if preferred
     alert('Match code copied!');
   };
   
@@ -54,6 +56,7 @@ const Schedules: React.FC = () => {
       venue: 'Court',
       matchVenue: 'Match Venue',
       matchDateTime: '12:40PM, 11 November 2025',
+      matchCode: 'ABC123XYZ',
       isEditing: true,
       hasStarted: false
     },
@@ -71,6 +74,7 @@ const Schedules: React.FC = () => {
       venue: 'Court',
       matchVenue: 'Match Venue',
       matchDateTime: '12:40PM, 11 November 2025',
+      matchCode: 'DEF456UVW',
       isEditing: false,
       hasStarted: false
     },
@@ -88,6 +92,7 @@ const Schedules: React.FC = () => {
       venue: 'Court',
       matchVenue: 'Match Venue',
       matchDateTime: '12:40PM, 11 November 2025',
+      matchCode: 'GHI789RST',
       isEditing: false,
       hasStarted: true
     },
@@ -104,20 +109,12 @@ const Schedules: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-6">
-          <div className="flex justify-between items-center mb-4">
-            <button 
-              onClick={() => navigate(-1)}
-              className="text-gray-600 hover:text-gray-800 flex items-center gap-2 cursor-pointer"
-            >
-              <span>←</span> Back to Tournament
-            </button>
-            <div className="flex items-center gap-4">
+            <div className="flex justify-between items-center mb-4">
               <button 
-                onClick={handleCopyCode}
-                className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors cursor-pointer"
+                onClick={() => navigate(-1)}
+                className="text-gray-600 hover:text-gray-800 flex items-center gap-2 cursor-pointer"
               >
-                <span>Copy Match Code</span>
-                <CopyIcon className="w-4 h-4" />
+                <span>←</span> Back to Tournament
               </button>
               <button 
                 onClick={() => navigate(`/tournaments/${id ?? '1'}/fixtures`)}
@@ -126,7 +123,6 @@ const Schedules: React.FC = () => {
                 Edit Fixture
               </button>
             </div>
-          </div>
           <h1 className="text-3xl font-semibold text-gray-800">Schedule</h1>
         </div>
 
@@ -179,12 +175,22 @@ const Schedules: React.FC = () => {
           {matches.map((match) => (
             <div 
               key={match.id} 
-              className="bg-[#F8F8F8] rounded-lg shadow-sm p-6 border border-gray-200 cursor-pointer hover:shadow-md transition-shadow"
+              className="bg-[#F8F8F8] rounded-lg shadow-sm p-6 border border-gray-200 cursor-pointer hover:shadow-md transition-shadow relative"
               onClick={() => navigate(match.hasStarted 
                 ? `/tournaments/${id ?? '1'}/match/${match.id}` 
                 : `/tournaments/${id ?? '1'}/match/${match.id}/pending`
               )}
             >
+              {/* Copy Match Code Button - Centered */}
+              <button
+                onClick={(e) => handleCopyCode(match.matchCode, e)}
+                className="absolute top-4 left-1/2 transform -translate-x-1/2 flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-all shadow-sm z-10"
+                title={`Copy match code: ${match.matchCode}`}
+              >
+                <CopyIcon className="w-3.5 h-3.5" />
+                <span>Copy Code</span>
+              </button>
+
               <div className="flex justify-between items-start">
                 {/* Left Side - Teams and Form */}
                 <div className="flex-1">
