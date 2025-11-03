@@ -212,7 +212,7 @@ const BasketballDashboard: React.FC = () => {
             {/* Up Coming Tournaments */}
             <div className="bg-white rounded-2xl p-6 shadow-sm">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-sm font-semibold text-gray-700">Up Coming tournament / Leagues</h2>
+                <h2 className="text-sm font-semibold text-gray-700">Upcoming Tournament / Leagues</h2>
                 <button className="text-xs text-blue-600 hover:underline">View All</button>
               </div>
               

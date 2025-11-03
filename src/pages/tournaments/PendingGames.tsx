@@ -69,7 +69,7 @@ const PendingGames: React.FC = () => {
             </div>
 
             {/* VS */}
-            <span className="text-lg font-medium text-gray-500">Vs</span>
+            <span className="text-lg font-medium text-gray-500">VS</span>
 
             {/* Team B */}
             <div className="flex items-center gap-3">
