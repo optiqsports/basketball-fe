@@ -120,6 +120,18 @@ const Statisticians: React.FC = () => {
 
       {/* Pagination */}
       <div className="flex justify-center items-center gap-2">
+        <button
+          onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+          disabled={currentPage === 1}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            currentPage === 1
+              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+          }`}
+        >
+          Previous
+        </button>
+        
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
@@ -133,6 +145,18 @@ const Statisticians: React.FC = () => {
             {page}
           </button>
         ))}
+
+        <button
+          onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+          disabled={currentPage === totalPages}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            currentPage === totalPages
+              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+          }`}
+        >
+          Next
+        </button>
       </div>
 
       {/* Add Statistician Modal */}

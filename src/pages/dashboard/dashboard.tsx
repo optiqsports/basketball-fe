@@ -162,7 +162,7 @@ const BasketballDashboard: React.FC = () => {
 
                   <div 
                     className="flex-1 mx-4 cursor-pointer hover:opacity-80 transition-opacity"
-                    onClick={() => navigate(`/tournaments/${upNextGames[currentSlide].tournamentId}/match/${upNextGames[currentSlide].id}`)}
+                    onClick={() => navigate(`/tournaments/${upNextGames[currentSlide].tournamentId}/match/${upNextGames[currentSlide].id}/pending`)}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">

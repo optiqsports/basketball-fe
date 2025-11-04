@@ -794,8 +794,8 @@ const GameScorePage: React.FC = () => {
           </div>
         )}
 
-        {/* Game Stats Section - Hidden when Box Score is shown */}
-        {!showBoxScore && (
+        {/* Game Stats Section - Hidden when Box Score or Shot Chart is shown */}
+        {!showBoxScore && activeTab !== 'shotchart' && (
           <div className="max-w-4xl mx-auto rounded-lg shadow-sm p-6 border mt-8" style={{ background: '#FCFEFF', border: '1px solid #A9A9A91A' }}>
           <h2 className="text-lg font-semibold text-gray-800 mb-4">Game Stats</h2>
 
