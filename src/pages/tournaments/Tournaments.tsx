@@ -64,6 +64,22 @@ const CompetitionDetailPage: React.FC = () => {
     { id: 3, teamA: 'TEAM A', teamAColor: 'yellow', teamB: 'TEAM B', teamBColor: 'blue', venue: 'Match Venue', time: '12:40PM, 11 November 2025', hasStarted: true },
   ];
 
+  interface TournamentLeader {
+    id: number;
+    name: string;
+    surname: string;
+    stat: number;
+    statLabel: string;
+    bgColor: string;
+    image: string;
+  }
+
+  const tournamentLeaders: TournamentLeader[] = [
+    { id: 1, name: 'Name', surname: 'Surname', stat: 11, statLabel: 'PPG', bgColor: '#FFCA69', image: '/player1.png' },
+    { id: 2, name: 'Name', surname: 'Surname', stat: 23, statLabel: 'PPG', bgColor: '#80B7D5', image: '/player2.png' },
+    { id: 3, name: 'Name', surname: 'Surname', stat: 5, statLabel: 'PPG', bgColor: '#7FD99A', image: '/player3.png' },
+  ];
+
   const handleCopyCode = () => {
     navigator.clipboard.writeText(matchCode);
     alert('Match code copied!');
@@ -292,53 +308,34 @@ const CompetitionDetailPage: React.FC = () => {
 
           {/* Player Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Player 1 - Yellow */}
-            <div className="rounded-2xl overflow-hidden bg-[#FFCA69]" style={{ width: '335px', height: '374px' }}>
-              <div className="p-4">
-                <div className="text-white font-medium mb-1">Name</div>
-                <div className="text-white font-bold text-lg mb-1">Surname</div>
-                <div className="bg-white text-gray-900 font-bold text-sm px-3 py-1 rounded-md inline-block">11 <span className='font-light'>PPG</span></div>
-              </div>
-              <div className="relative" style={{ height: '400px' }}>
-                <img
-                  src="/player1.png"
-                  alt="Player"
-                  className="w-[21rem] ml-0 mx-auto absolute mt-[-2rem]"
-                />
-              </div>
-            </div>
-            
-            {/* Player 2 - Blue */}
-            <div className="rounded-2xl overflow-hidden bg-[#80B7D5]" style={{ width: '335px', height: '374px' }}>
-              <div className="p-4">
-                <div className="text-white font-medium mb-1">Name</div>
-                <div className="text-white font-bold text-lg mb-1">Surname</div>
-                <div className="bg-white text-gray-900 font-bold text-sm px-3 py-1 rounded-md inline-block">23 <span className='font-light'>PPG</span></div>
-              </div>
-              <div className="relative" style={{ height: '400px' }}>
-                <img
-                  src="/player2.png"
-                  alt="Player"
-                  className="w-[21rem] ml-0 mx-auto absolute mt-[-2rem]"
-                />
-              </div>
-            </div>
-            
-            {/* Player 3 - Green */}
-            <div className="rounded-2xl overflow-hidden bg-[#7FD99A]" style={{ width: '335px', height: '374px' }}>
-              <div className="p-4">
-                <div className="text-white font-medium mb-1">Name</div>
-                <div className="text-white font-bold text-lg mb-1">Surname</div>
-                <div className="bg-white text-gray-900 font-bold text-sm px-3 py-1 rounded-md inline-block">05 <span className='font-light'>PPG</span></div>
-              </div>
-              <div className="relative" style={{ height: '400px' }}>
-                <img
-                  src="/player3.png"
-                  alt="Player"
-                  className="w-[21rem] ml-0 mx-auto absolute mt-[-2rem]"
-                />
-              </div>
-            </div>
+            {tournamentLeaders.map((player) => {
+              const firstMatchId = matches.length > 0 ? matches[0].id : 1;
+              return (
+                <div
+                  key={player.id}
+                  className="rounded-2xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+                  style={{ width: '335px', height: '374px', backgroundColor: player.bgColor }}
+                  onClick={() => {
+                    navigate(`/tournaments/${id ?? '1'}/match/${firstMatchId}/player/${player.id}`);
+                  }}
+                >
+                  <div className="p-4">
+                    <div className="text-white font-medium mb-1">{player.name}</div>
+                    <div className="text-white font-bold text-lg mb-1">{player.surname}</div>
+                    <div className="bg-white text-gray-900 font-bold text-sm px-3 py-1 rounded-md inline-block">
+                      {player.stat} <span className='font-light'>{player.statLabel}</span>
+                    </div>
+                  </div>
+                  <div className="relative" style={{ height: '400px' }}>
+                    <img
+                      src={player.image}
+                      alt={`${player.name} ${player.surname}`}
+                      className="w-[21rem] ml-0 mx-auto absolute mt-[-2rem]"
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
